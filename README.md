@@ -1,4 +1,4 @@
-# ECMapProb
+# BoxMapProb
 Probability maps of pyroclastic density currents (PDCs) by using a modified approach of the box model and SRTM 30 m elevation data.
 
 Usage:
