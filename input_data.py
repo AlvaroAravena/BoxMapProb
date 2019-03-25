@@ -1,5 +1,5 @@
 # Name of the run (used to save the parameters and the output)
-run_name = ChaitenNew
+run_name = Example
 
 # Source of DEM 
 # source_dem = type of input data (1 => SRTM 30 m / 2 => Uploaded DEM (UTM) / 3 => Uploaded Data (lat,lon)). 
@@ -18,8 +18,8 @@ lon2 = -72.5
 lat1 = -42.95
 lat2 = -42.75
 
-# Maximum order of energy cones
-cone_levels = 30
+# Maximum order of secondary collapses
+max_levels = 30
 
 # Probability distribution of collapse location (1 => Punctual / 2 => Linear / 3 => Circumference arch)
 dist_source = 1
@@ -39,23 +39,27 @@ lon_cen = -72.650
 lat_cen = -42.835
 var_cen = 300.0
 
-# Other parameters of energy cones
-# height = expected height of collapse (above the surface, in meters)
-# hl = H/L for the energy cones
-# var_height = uncertainty of collapse height (in meters)
-# var_hl = uncertainty of hl
-# dist_input = type of distribution for height and H/L (1 => Gaussian / 2 => Uniform)
-height = 500.0
-hl = 0.4
-var_height = 200.0
-var_hl = 0.05
+# Other parameters of box model
+# volume = collapsing volume (in cubic meters)
+# ws = settling velocity
+# c_const = parameter C
+# var_volume = uncertainty of collapsing volume (in cubic meters)
+# var_ws = uncertainty of settling velocity
+# var_c_const = uncertainty of C
+# dist_input = type of distribution for volume, ws and c (1 => Gaussian / 2 => Uniform)
+volume = 400000000.0
+ws = 0.3
+c_const = 1.7
+var_volume = 20000000.0
+var_ws = 0.2
+var_c_const = 0.7
 dist_input = 2
 
 # Number of simulations computed by the code
-N = 1
+N = 30
 
 # Save results in files txt ( 1 => Yes / 0 => No )
 save_data = 1
 
-# Assumption for redistributing potential energy (1, 2, 3 or 4. Please use 4)
+# Assumption for redistributing pyroclastic material (1, 2, 3 or 4. Please use 4)
 redist_energy = 4
