@@ -1,5 +1,5 @@
 # Name of the run (used to save the parameters and the output)
-run_name = Example
+run_name = Chaiten
 
 # Source of DEM 
 # source_dem = type of input data (1 => SRTM 30 m / 2 => Uploaded DEM (UTM) / 3 => Uploaded Data (lat,lon)). 
@@ -42,24 +42,36 @@ var_cen = 300.0
 # Other parameters of box model
 # volume = collapsing volume (in cubic meters)
 # ws = settling velocity
-# c_const = parameter C
+# phi_0 = initial concentration of particles
+# Fr = Froude Number
+# rho_p = pyroclast density (in kg/m3) 
+# rho_gas = gas density in PDC (in kg/m3)
+# rho_atm = atmosphere density (in kg/m3)
 # var_volume = uncertainty of collapsing volume (in cubic meters)
 # var_ws = uncertainty of settling velocity
-# var_c_const = uncertainty of C
+# var_phi_0 = uncertainty of initial concentration of particles 
+# var_Fr = uncertainty of Fr
+# var_rho_p = uncertainty of pyroclast density (in kg/m3)
 # dist_input = type of distribution for volume, ws and c (1 => Gaussian / 2 => Uniform)
-volume = 400000000.0
-ws = 0.3
-c_const = 1.7
-var_volume = 20000000.0
-var_ws = 0.2
-var_c_const = 0.7
+volume = 60000000.0
+ws = 0.6
+phi_0 = 0.02
+Fr = 1.1
+rho_p = 1500.0
+rho_gas = 1.10
+rho_atm = 1.18
+var_volume = 10000000.0
+var_ws = 0.1
+var_phi_0 = 0.01
+var_Fr = 0.1
+var_rho_p = 100.0
 dist_input = 2
 
 # Number of simulations computed by the code
-N = 30
+N = 5
 
 # Save results in files txt ( 1 => Yes / 0 => No )
 save_data = 1
 
 # Assumption for redistributing pyroclastic material (1, 2, 3 or 4. Please use 4)
-redist_energy = 4
+redist_volume = 4
