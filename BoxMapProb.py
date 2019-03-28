@@ -71,14 +71,18 @@ def interpol_pos(lon1, lat1, step_lon_deg, step_lat_deg, lon_cen, lat_cen, cells
 print('Reading input file')
 
 current_path = os.getcwd()
-file_txt = open('input_data.py')
+try:
+	file_txt = open('input_data.py')
+except:
+	print('input_data.py not found in ' + str(current_path))
+	sys.exit(0)
 line = file_txt.readlines()
 file_txt.close()
 
 [run_name, source_dem, lon1, lon2, lat1, lat2, g] = ['run_default', 1, np.nan, np.nan, np.nan, np.nan, 9.8]
 [dist_source, var_cen, lon_cen, lat_cen, east_cen, north_cen, azimuth_lin] = [1, 0.0, np.nan, np.nan, np.nan, np.nan, np.nan]
 [length_lin, radius_rad, ang1_rad, ang2_rad] = [np.nan, np.nan, np.nan, np.nan]
-[volume, ws, phi_0, Fr, rho_p, rho_gas, rho_atm, var_volume, var_ws, var_phi_0, var_Fr, var_rho_p, N, max_levels, save_data, dist_input, redist_volume] = [np.nan, 2.0, 0.02, 1.0, 1800.0, 1.0, 1.2, 0.0, 0.0, 0.0, 0.0, 0.0, 100, 1, 0, 1, 4]
+[volume, ws, phi_0, Fr, rho_p, rho_gas, var_volume, var_ws, var_phi_0, var_Fr, var_rho_p,  var_rho_gas, N, max_levels, save_data, dist_input, redist_volume, plot_flag, sea_flag] = [np.nan, 2.0, 0.02, 1.0, 1800.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100, 1, 0, 1, 4, 1, 0]
 
 for i in range(0,len(line)):
 	line[i] = line[i].replace('=',' ')
@@ -129,8 +133,6 @@ for i in range(0,len(line)):
 				Fr = float(aux[1])
 			if( aux[0] == 'rho_gas'):
 				rho_gas = float(aux[1])
-			if( aux[0] == 'rho_atm'):
-				rho_atm = float(aux[1])
 			if( aux[0] == 'rho_p'):
 				rho_p = float(aux[1])
 			if( aux[0] == 'var_volume'):
@@ -143,6 +145,8 @@ for i in range(0,len(line)):
 				var_Fr = float(aux[1])
 			if( aux[0] == 'var_rho_p'):
 				var_rho_p = float(aux[1])
+			if( aux[0] == 'var_rho_gas'):
+				var_rho_gas = float(aux[1])
 			if( aux[0] == 'N'):
 				N = int(aux[1])
 			if( aux[0] == 'max_levels'):
@@ -163,6 +167,9 @@ try:
 except:
 	pass
 shutil.copyfile('input_data.py', 'Results/' + run_name + '/input_data.py') 
+file_log = open('Results/' + run_name + '/log.txt','w')
+file_log.write('0')
+file_log.close()
 
 if(source_dem == 1 and ( np.isnan( lon1 ) or np.isnan( lon2 ) or np.isnan( lat1 ) or np.isnan( lat2 ) or np.isnan( lon_cen ) or np.isnan( lat_cen )  ) ):
 	print('Problems with input parameters')
@@ -228,7 +235,11 @@ if(source_dem == 1):
 
 if(source_dem == 2):
 	print('Reading map')
-	file_txt = open('input_DEM.asc')
+	try:
+		file_txt = open('input_DEM.asc')
+	except:
+		print('input_DEM.asc not found in ' + str(current_path))
+		sys.exit(0)
 	line = file_txt.readlines()
 	file_txt.close()
 
@@ -270,8 +281,11 @@ if(source_dem == 2):
 
 if(source_dem == 3):
 	print('Reading map')
-	topography_file = 'Topography_3.txt'
-	file_txt = open(topography_file)
+	try:
+		file_txt = open('Topography_3.txt')
+	except:
+		print('Topography_3.txt not found in ' + str(current_path))
+		sys.exit(0)
 	line = file_txt.readlines()
 	file_txt.close()
 
@@ -408,6 +422,14 @@ if(var_rho_p > 0.0):
 else:
 	rho_p_vector = np.ones(N) * rho_p
 
+if(var_rho_gas > 0.0):
+	if(dist_input == 1):
+		rho_gas_vector = np.random.normal(rho_gas, var_rho_gas, N)
+	else:
+		rho_gas_vector = np.random.uniform(rho_gas - var_rho_gas, rho_gas + var_rho_gas, N)
+else:
+	rho_gas_vector = np.ones(N) * rho_gas
+
 if(var_volume > 0.0):
 	while( 1 == 1 ):
 		aux_boolean = 0
@@ -469,6 +491,19 @@ if(var_rho_p > 0.0):
 					rho_p_vector[i] = np.random.normal(rho_p , var_rho_p ,1)
 				elif(dist_input == 2):
 					rho_p_vector[i] = np.random.uniform(rho_p - var_rho_p , rho_p + var_rho_p , 1)
+				aux_boolean = 1
+		if(aux_boolean == 0):
+			break
+
+if(var_rho_gas > 0.0):
+	while( 1 == 1 ):
+		aux_boolean = 0
+		for i in range(0,N):
+			if(rho_gas_vector[i] < 0):
+				if(dist_input == 1):
+					rho_gas_vector[i] = np.random.normal(rho_gas , var_rho_gas ,1)
+				elif(dist_input == 2):
+					rho_gas_vector[i] = np.random.uniform(rho_gas - var_rho_gas , rho_gas + var_rho_gas , 1)
 				aux_boolean = 1
 		if(aux_boolean == 0):
 			break
@@ -544,6 +579,7 @@ angstep = 10
 distep = 3
 anglen = 360 / angstep
 pix_min = 0.0
+val_resolution = 3
 
 if( redist_volume == 3 or redist_volume == 4 ):
 	factor_mult = 50.0
@@ -563,20 +599,21 @@ if( redist_volume == 3 or redist_volume == 4 ):
 	index_max = anglen/2 - 1
 
 if( save_data == 1 ):
-	summary_data = np.zeros((N,9 + length_direction))
+	summary_data = np.zeros((N, 10 + length_direction))
 	summary_data[:,0] = volume_vector
 	summary_data[:,1] = ws_vector
 	summary_data[:,2] = phi_0_vector
 	summary_data[:,3] = Fr_vector
 	summary_data[:,4] = rho_p_vector
+	summary_data[:,5] = rho_gas_vector
 	if( source_dem == 1 or source_dem == 3):
-		summary_data[:,5] = lon_cen_vector
-		summary_data[:,6] = lat_cen_vector
+		summary_data[:,6] = lon_cen_vector
+		summary_data[:,7] = lat_cen_vector
 		area_pixel = step_lon_m * step_lat_m * 1e-6
 		sim_data = str(N) + "\n" + str(step_lon_m) + "\n" + str(step_lat_m) + "\n" + str(source_dem) + "\n" + str(max_levels) + "\n"
 	elif( source_dem == 2 ):
-		summary_data[:,5] = east_cen_vector
-		summary_data[:,6] = north_cen_vector
+		summary_data[:,6] = east_cen_vector
+		summary_data[:,7] = north_cen_vector
 		area_pixel = cellsize * cellsize * 1e-6
 		sim_data = str(N) + "\n" + str(cellsize) + "\n" + str(cellsize) + "\n" + str(source_dem) + "\n" + str(max_levels) + "\n"
 	string_data = ""
@@ -602,9 +639,9 @@ if(source_dem == 1 or source_dem == 3):
 		sum_pixels = 0
 		ws_current = ws_vector[i]
 		rho_p_current = rho_p_vector[i]
+		rho_gas_current = rho_gas_vector[i]
 		Fr_current = Fr_vector[i]
-		gp_current = g * (rho_p_current - rho_gas ) / rho_gas
-		phi_0_c_current = (rho_atm - rho_gas) / (rho_p_current - rho_gas)
+		gp_current = g * (rho_p_current - rho_gas_current ) / rho_gas_current
 
 		if(save_direction == 1):
 			data_direction = np.zeros((cells_lat,cells_lon,length_direction))
@@ -661,7 +698,7 @@ if(source_dem == 1 or source_dem == 3):
 						break
 					h = interpol_pos(lon1, lat1, step_lon_deg, step_lat_deg, polygon[j][0] + distance * cos(angle_rad) * step_lon_deg / step_lon_m , polygon[j][1] + distance*sin(angle_rad)*step_lat_deg/step_lat_m , cells_lon, cells_lat, Topography)
 					h_min = min(h, h_min)
-					h_boxmodel = ( 1 / (2 * g) ) * np.power( ( const_c * np.power(Lmax, 1.0/3.0) ) / ( (distance / Lmax) * np.power( cosh(atanh( np.power(distance / Lmax, 2.0) )) , 2.0)  ) , 2.0)
+					h_boxmodel = ( 1 / (2 * g) ) * np.power( ( const_c * np.power(Lmax, 1.0/3.0) ) / ( ( distance / Lmax) * np.power( cosh(atanh( np.power( distance / Lmax, 2.0) )) , 2.0)  ) , 2.0)
 					if( h >= h_min + h_boxmodel ):
 						polygon_xy.append((int((polygon[j][0] + (distance - distep)*cos(angle_rad)*step_lon_deg/step_lon_m - lon1) * cells_lon / (lon2 - lon1)),int((polygon[j][1] + (distance - distep)*sin(angle_rad)*step_lat_deg/step_lat_m - lat1) * cells_lat / (lat2 - lat1))))
 						polygons_new.append(distance - distep)
@@ -686,7 +723,7 @@ if(source_dem == 1 or source_dem == 3):
 				draw = ImageDraw.Draw(img).polygon(polygon_xy, outline = 1 , fill = 1)
 				data_step = np.maximum( np.minimum(data_aux_t, data_step + np.array(img)), data_aux_b)
 
-			if( max_levels > polygon[j][3] and sum(sum(data_step)) > sum_pixels + pix_min ):
+			if( max_levels > polygon[j][3] and sum(sum(data_step)) > sum_pixels + pix_min and max(polygons_new) > val_resolution * np.sqrt( step_lat_m * step_lon_m ) ):
 
 				aux = np.zeros(len(polygons_new)+2) 
 				aux[1:len(polygons_new)+1] = np.array(polygons_new) 
@@ -768,6 +805,7 @@ if(source_dem == 1 or source_dem == 3):
 
 				wh_sum = np.zeros(len(polygons_new)) 
 				ter_sum = np.zeros(len(polygons_new)) 
+				pos_sum = np.zeros(len(polygons_new)) 
 
 				if(len(wh_max) > 0):
 					
@@ -784,6 +822,7 @@ if(source_dem == 1 or source_dem == 3):
 									break
 								wh_sum[lmax] = wh_sum[lmax] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 								ter_sum[lmax] = ter_sum[lmax] + 1.0 * vector_correc[l_index]
+								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index]
 
 							for l in range(1,len(polygons_new) - l_it):
 								l_index = lmax - l
@@ -793,6 +832,7 @@ if(source_dem == 1 or source_dem == 3):
 									break							
 								wh_sum[lmax] = wh_sum[lmax] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 								ter_sum[lmax] = ter_sum[lmax] + 1.0 * vector_correc[l_index]
+								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index]
 
 					elif( redist_volume == 2 or redist_volume == 4):
 
@@ -825,13 +865,16 @@ if(source_dem == 1 or source_dem == 3):
 										l_index = l_index - len(polygons_new)
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_right) == step_right ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int]
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int]
 
 								for l in range(1,int(step_left)):
 									l_index = l_max_int - l
@@ -839,14 +882,17 @@ if(source_dem == 1 or source_dem == 3):
 										l_index = len(polygons_new) + l_index
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_left) == step_left ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int]
 
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0)  * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0  * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int]
 
 						else:
 
@@ -874,15 +920,18 @@ if(source_dem == 1 or source_dem == 3):
 										l_index = l_index - len(polygons_new)
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
-
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_right) == step_right ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int]
+
 
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int]
 
 								for l in range(1,int(step_left)):
 									l_index = l_max_int - l
@@ -890,29 +939,34 @@ if(source_dem == 1 or source_dem == 3):
 										l_index = len(polygons_new) + l_index
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_left) == step_left ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int]
+
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int]
 
 					for l in wh_max:
 						lint = np.int(l)
 						if( wh_sum[lint] > 0 ):
 							wh_sum[lint] = wh_sum[lint] / ter_sum[lint]
+							pos_sum[lint] = pos_sum[lint] / ter_sum[lint]
 
-							new_x = polygon[j][0] + polygons_new[lint] * cos((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) *step_lon_deg/step_lon_m ; 
-							new_y = polygon[j][1] + polygons_new[lint] * sin((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) *step_lat_deg/step_lat_m ;
+							new_x = polygon[j][0] + pos_sum[lint] * cos((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) *step_lon_deg/step_lon_m ; 
+							new_y = polygon[j][1] + pos_sum[lint] * sin((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) *step_lat_deg/step_lat_m ;
 							height_eff = interpol_pos(lon1, lat1, step_lon_deg, step_lat_deg, new_x, new_y, cells_lon, cells_lat, Topography)
 							new_volume = polygon[j][5]*ter_sum[lint]/sum(vector_correc)*(1 - polygon[j][6])/ (1-wh_sum[lint])
 
-							if(interpol_pos(lon1, lat1, step_lon_deg, step_lat_deg, new_x, new_y, cells_lon, cells_lat, Topography) < 99999 and phi_0_c_current < wh_sum[lint]):
+							if( interpol_pos(lon1, lat1, step_lon_deg, step_lat_deg, new_x, new_y, cells_lon, cells_lat, Topography) < 99999 ):
 								polygon.append(( new_x, new_y, height_eff, polygon[j][3] + 1, l, new_volume , wh_sum[lint] ))
 
 			sum_pixels = sum(sum(data_step))	
-			print((j, len(polygon), polygon[j][3], polygon[j][2], sum(sum(data_step)), polygon[j][4], polygon[j][5]/polygon[0][5] , polygon[j][6], Lmax ))
+			print((j, len(polygon), polygon[j][3], polygon[j][2], sum(sum(data_step)), polygon[j][4], polygon[j][5] , polygon[j][6], Lmax ))
 
 			if( save_data == 1 ):
 				if(j == 0 or (j + 1 == len(polygon))):
@@ -938,11 +992,11 @@ if(source_dem == 1 or source_dem == 3):
 				for ii in range(length_direction):
 					distances_corrected = distances * data_direction[:,:,ii]
 					distances_corrected = distances_corrected * data_step[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ]
-					summary_data[i,9 + ii]  = distances_corrected.max() / 1000.0
+					summary_data[i,10 + ii]  = distances_corrected.max() / 1000.0
 
 			distances = distances * data_step[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ]
-			summary_data[i,7] = sum(sum(data_step)) * area_pixel
-			summary_data[i,8] = distances.max() / 1000.0
+			summary_data[i,8] = sum(sum(data_step)) * area_pixel
+			summary_data[i,9] = distances.max() / 1000.0
 
 		print(' Simulation finished (N = ' + str(i+1) + ')')
 
@@ -962,9 +1016,9 @@ if( source_dem == 2 ):
 		sum_pixels = 0
 		ws_current = ws_vector[i]
 		rho_p_current = rho_p_vector[i]
+		rho_gas_current = rho_gas_vector[i]
 		Fr_current = Fr_vector[i]
-		gp_current = g * (rho_p_current - rho_gas ) / rho_gas
-		phi_0_c_current = (rho_atm - rho_gas) / (rho_p_current - rho_gas)
+		gp_current = g * (rho_p_current - rho_gas_current ) / rho_gas_current
 
 		for j in range(10000): 
 			if(j == len(polygon)):
@@ -998,7 +1052,7 @@ if( source_dem == 2 ):
 						break
 					h = interpol_pos(east_cor, north_cor, cellsize, cellsize, polygon[j][0] + distance * cos(angle_rad) , polygon[j][1] + distance*sin(angle_rad) , n_east, n_north, Topography)
 					h_min = min(h, h_min)
-					h_boxmodel = ( 1 / (2 * g) ) * np.power( ( const_c * np.power(Lmax, 1.0/3.0) ) / ( (distance / Lmax) * np.power( cosh(atanh( np.power(distance / Lmax, 2.0) )) , 2.0)  ) , 2.0)
+					h_boxmodel = ( 1 / (2 * g) ) * np.power( ( const_c * np.power(Lmax, 1.0/3.0) ) / ( ( distance / Lmax) * np.power( cosh(atanh( np.power( distance / Lmax, 2.0) )) , 2.0)  ) , 2.0)
 					if(  h >= h_min + h_boxmodel ):
 						polygon_xy.append((int((polygon[j][0] + (distance-distep)* cos(angle_rad) - east_cor) * n_east / ( cellsize * ( n_east - 1 ) ) ), int((polygon[j][1] + (distance-distep)*sin(angle_rad) - north_cor) * n_north / ( cellsize * ( n_north - 1 ) ))))
 						polygons_new.append(distance - distep)
@@ -1023,7 +1077,7 @@ if( source_dem == 2 ):
 				draw = ImageDraw.Draw(img).polygon(polygon_xy, outline = 0 , fill = 1)
 				data_step = np.maximum( np.minimum(data_aux_t, data_step + np.array(img)), data_aux_b)
 
-			if( max_levels > polygon[j][3] and sum(sum(data_step)) > sum_pixels + pix_min ):
+			if( max_levels > polygon[j][3] and sum(sum(data_step)) > sum_pixels + pix_min and max(polygons_new) > val_resolution * cellsize ):
 				aux = np.zeros(len(polygons_new) + 2) 
 				aux[1:len(polygons_new)+1] = np.array(polygons_new) 
 				aux[0] = polygons_new[len(polygons_new)-1]
@@ -1100,6 +1154,7 @@ if( source_dem == 2 ):
 
 				wh_sum = np.zeros(len(polygons_new))
 				ter_sum = np.zeros(len(polygons_new)) 
+				pos_sum = np.zeros(len(polygons_new)) 
 
 				if(len(wh_max) > 0):
 					
@@ -1116,6 +1171,7 @@ if( source_dem == 2 ):
 									break
 								wh_sum[lmax] = wh_sum[lmax] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 								ter_sum[lmax] = ter_sum[lmax] + 1.0 * vector_correc[l_index]
+								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index]
 
 							for l in range(1,len(polygons_new) - l_it):
 								l_index = lmax - l
@@ -1125,6 +1181,7 @@ if( source_dem == 2 ):
 									break							
 								wh_sum[lmax] = wh_sum[lmax] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 								ter_sum[lmax] = ter_sum[lmax] + 1.0 * vector_correc[l_index]
+								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index]
 
 					elif( redist_volume == 2 or redist_volume == 4):
 
@@ -1157,13 +1214,16 @@ if( source_dem == 2 ):
 										l_index = l_index - len(polygons_new)
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_right) == step_right ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int]
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int]
 
 								for l in range(1,int(step_left)):
 									l_index = l_max_int - l
@@ -1171,13 +1231,16 @@ if( source_dem == 2 ):
 										l_index = len(polygons_new) + l_index
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_left) == step_left ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int]
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0)  * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0  * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int]
 
 						else:
 							for l_ind in range(len(wh_max)):
@@ -1204,13 +1267,16 @@ if( source_dem == 2 ):
 										l_index = l_index - len(polygons_new)
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_right) == step_right ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int]
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int]
 
 
 								for l in range(1,int(step_left)):
@@ -1219,29 +1285,33 @@ if( source_dem == 2 ):
 										l_index = len(polygons_new) + l_index
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
 
 								if( int(step_left) == step_left ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int]
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int]
 
 					for l in wh_max:
 						lint = np.int(l)
 						if( wh_sum[lint] > 0 ):
 							wh_sum[lint] = wh_sum[lint] / ter_sum[lint]
+							pos_sum[lint] = pos_sum[lint] / ter_sum[lint]
 
-							new_x = polygon[j][0] + polygons_new[lint] * cos((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) ; 
-							new_y = polygon[j][1] + polygons_new[lint] * sin((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) ;
+							new_x = polygon[j][0] + pos_sum[lint] * cos((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) ; 
+							new_y = polygon[j][1] + pos_sum[lint] * sin((vec_ang[lint] + angstep*(l-lint) ) * np.pi / 180 ) ;
 							height_eff = interpol_pos(east_cor, north_cor, cellsize, cellsize, new_x, new_y, n_east, n_north, Topography)
 							new_volume = polygon[j][5]*ter_sum[lint]/sum(vector_correc)*(1 - polygon[j][6])/ (1-wh_sum[lint])
 
-							if(interpol_pos(east_cor, north_cor, cellsize, cellsize, new_x, new_y, n_east, n_north, Topography) < 99999 and phi_0_c_current < wh_sum[lint]):
+							if(interpol_pos(east_cor, north_cor, cellsize, cellsize, new_x, new_y, n_east, n_north, Topography) < 99999 ):
 								polygon.append(( new_x, new_y, height_eff, polygon[j][3] + 1, l, new_volume, wh_sum[lint] ))
 
 			sum_pixels = sum(sum(data_step))	
-			print((j, len(polygon), polygon[j][3], polygon[j][2], sum(sum(data_step)), polygon[j][4], polygon[j][5]/polygon[0][5] , polygon[j][6], Lmax ))
+			print((j, len(polygon), polygon[j][3], polygon[j][2], sum(sum(data_step)), polygon[j][4], polygon[j][5] , polygon[j][6], Lmax ))
 
 			if( save_data == 1 ):
 				if(j == 0 or (j + 1 == len(polygon))):
@@ -1262,9 +1332,8 @@ if( source_dem == 2 ):
 		if( save_data == 1 ):
 			distances = np.power(np.power(( matrix_east - east_cen_vector[i]) ,2) + np.power(( matrix_north - north_cen_vector[i]) ,2),0.5) 
 			distances = distances * data_step[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ]
-			summary_data[i,7] = sum(sum(data_step)) * area_pixel
-			summary_data[i,8] = distances.max() / 1000.0
-
+			summary_data[i,8] = sum(sum(data_step)) * area_pixel
+			summary_data[i,9] = distances.max() / 1000.0
 
 		print(' Simulation finished (N = ' + str(i+1) + ')')
 
@@ -1273,6 +1342,8 @@ if( save_data == 1 ):
 	np.savetxt('Results/' + run_name + '/' + 'data_cones.txt', data_cones, fmt='%.2e')
 	np.savetxt('Results/' + run_name + '/' + 'topography.txt', Topography, fmt='%.2e')
 	np.savetxt('Results/' + run_name + '/' + 'summary.txt', summary_data, fmt='%.5e')
+	if(sea_flag == 1):
+		np.savetxt('Results/' + run_name + '/' + 'topography_sea.txt', Topography_Sea, fmt='%.5e')
 	text_file = open('Results/' + run_name + '/' + 'energy_cones.txt', 'w')
 	text_file.write(string_data)
 	text_file.close()
@@ -1304,7 +1375,7 @@ if( save_data == 1 ):
 		np.savetxt('Results/' + run_name + '/' + 'matrix_north.txt', matrix_north, fmt='%.5e')
 
 # FIGURES
-if(source_dem == 1 or source_dem == 3):
+if((source_dem == 1 or source_dem == 3) and (plot_flag == 1)):
 
 	data_cones = data_cones[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ] / N
 	line_val = data_cones.max()
@@ -1319,10 +1390,10 @@ if(source_dem == 1 or source_dem == 3):
 	if( N > 1 ):
 		CS_Topo = plt.contourf(matrix_lon,matrix_lat,Topography, 100, alpha = 1.0, cmap = cmapg ,antialiased=True)
 		CS_Sea = plt.contourf(matrix_lon,matrix_lat,Topography_Sea, 100, alpha = 0.5, cmap = cmaps ,antialiased=True)
-		CS = plt.contourf(matrix_lon, matrix_lat, data_cones, 100, vmin = 0.0, vmax = 1.0,  alpha= 0.3, interpolation='linear', cmap=cmapr, antialiased=True)	
+		CS = plt.contourf(matrix_lon, matrix_lat, data_cones, 100, vmin = 0.0, vmax = 1.0,  alpha= 0.3, interpolation='linear', cmap=cmapr, antialiased=True )	
 		fmt = '%.2f'
 		plt.colorbar()
-		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones, np.array([val_down, val_up]), colors='r', interpolation='linear')
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones, np.array([val_down, val_up]), colors='r', interpolation='linear', linewidths = 0.1)
 		plt.clabel(CS_lines, fontsize = 7, colors='k', fmt=fmt)
 	else:
 		CS_Topo = plt.contourf(matrix_lon,matrix_lat,Topography, 100, alpha = 1.0, cmap = cmapg ,antialiased=True)
@@ -1363,7 +1434,7 @@ if(source_dem == 1 or source_dem == 3):
 
 	plt.show()
 
-if(source_dem == 2):
+if(source_dem == 2 and plot_flag == 1):
 
 	data_cones = data_cones[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ] / N
 	line_val = data_cones.max()
@@ -1383,7 +1454,7 @@ if(source_dem == 2):
 		CS = plt.contourf(matrix_east,matrix_north, data_cones, 100, vmin = 0.0, vmax = 1.0,  alpha= 0.3, interpolation='linear', cmap=cmapr, antialiased=True)	
 		fmt = '%.2f'
 		plt.colorbar()
-		CS_lines = plt.contour(matrix_east,matrix_north, data_cones, np.array([val_down, val_up]), colors='r', interpolation='linear')
+		CS_lines = plt.contour(matrix_east,matrix_north, data_cones, np.array([val_down, val_up]), colors='r', interpolation='linear', linewidths = 0.1)
 		plt.clabel(CS_lines, inline=0.1, fontsize = 7, colors='k', fmt=fmt)
 	else:
 		CS_Topo = plt.contourf(matrix_east,matrix_north,Topography, 100, alpha = 1.0, cmap = cmapg ,antialiased=True)
@@ -1420,3 +1491,7 @@ if(source_dem == 2):
 		plt.savefig('Results/' + run_name + '/Histogram.png')
 
 	plt.show()
+
+file_log = open('Results/' + run_name + '/log.txt','w')
+file_log.write('1')
+file_log.close()

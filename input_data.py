@@ -46,29 +46,27 @@ var_cen = 300.0
 # Fr = Froude Number
 # rho_p = pyroclast density (in kg/m3) 
 # rho_gas = gas density in PDC (in kg/m3)
-# rho_atm = atmosphere density (in kg/m3)
 # var_volume = uncertainty of collapsing volume (in cubic meters)
 # var_ws = uncertainty of settling velocity
 # var_phi_0 = uncertainty of initial concentration of particles 
 # var_Fr = uncertainty of Fr
 # var_rho_p = uncertainty of pyroclast density (in kg/m3)
-# dist_input = type of distribution for volume, ws and c (1 => Gaussian / 2 => Uniform)
-volume = 60000000.0
+# dist_input = type of distribution for volume, ws, phi_0, Fr, rho_p and rho_gas (1 => Gaussian / 2 => Uniform)
+volume = 100000000.0
 ws = 0.6
-phi_0 = 0.02
+phi_0 = 0.01
 Fr = 1.1
-rho_p = 1500.0
-rho_gas = 1.10
-rho_atm = 1.18
-var_volume = 10000000.0
-var_ws = 0.1
-var_phi_0 = 0.01
+rho_p = 850.0
+rho_gas = 1.18
+var_volume = 30000000.0
+var_ws = 0.4
+var_phi_0 = 0.005
 var_Fr = 0.1
-var_rho_p = 100.0
+var_rho_p = 150.0
 dist_input = 2
 
 # Number of simulations computed by the code
-N = 5
+N = 50
 
 # Save results in files txt ( 1 => Yes / 0 => No )
 save_data = 1
