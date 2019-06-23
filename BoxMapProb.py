@@ -157,6 +157,10 @@ for i in range(0,len(line)):
 				dist_input = int(aux[1])
 			if( aux[0] == 'redist_volume'):
 				redist_volume = int(aux[1])
+			if( aux[0] == 'plot_flag'):
+				plot_flag = int(aux[1])
+			if( aux[0] == 'sea_flag'):
+				sea_flag = int(aux[1])
 
 try:
 	os.mkdir('Results')
@@ -979,7 +983,7 @@ if(source_dem == 1 or source_dem == 3):
 					distances = distances * data_step[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ]
 					string_data = string_data + "\n" + str(polygon[j][3]) + " " + str(sum(sum(data_step))* area_pixel) + " " + str(distances.max() / 1000.0)
 				if( N == 1 ):
-					string_cones = string_cones + "\n"  + str(j) + " " + str(polygon[j][3]) + " " + str(polygon[j][2]) + " " + str(polygon[j][5]) 
+					string_cones = string_cones + "\n"  + str(j) + " " + str(polygon[j][3]) + " " + str(polygon[j][2]) + " " + str(polygon[j][5])  + " " + str(polygon[j][6]) 
 
 		if( N > 1 ):
 			data_cones = data_cones + data_step
@@ -1171,7 +1175,7 @@ if( source_dem == 2 ):
 									break
 								wh_sum[lmax] = wh_sum[lmax] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 								ter_sum[lmax] = ter_sum[lmax] + 1.0 * vector_correc[l_index]
-								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index]
+								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index] * np.cos( (lmax - l_index) * angstep * np.pi / 180.0 )
 
 							for l in range(1,len(polygons_new) - l_it):
 								l_index = lmax - l
@@ -1181,7 +1185,7 @@ if( source_dem == 2 ):
 									break							
 								wh_sum[lmax] = wh_sum[lmax] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 								ter_sum[lmax] = ter_sum[lmax] + 1.0 * vector_correc[l_index]
-								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index]
+								pos_sum[lmax] = pos_sum[lmax] + polygons_new[l_index] * vector_correc[l_index] * np.cos( (lmax - l_index) * angstep * np.pi / 180.0 )
 
 					elif( redist_volume == 2 or redist_volume == 4):
 
@@ -1214,16 +1218,16 @@ if( source_dem == 2 ):
 										l_index = l_index - len(polygons_new)
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index] * np.cos( (l_max_int - l_index) * angstep * np.pi / 180.0 )
 
 								if( int(step_right) == step_right ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_right_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int] * np.cos( (l_right_int - l_max_int) * angstep * np.pi / 180.0 )
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_right_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int] * np.cos( (l_right_int - l_max_int) * angstep * np.pi / 180.0 )
 
 								for l in range(1,int(step_left)):
 									l_index = l_max_int - l
@@ -1231,16 +1235,16 @@ if( source_dem == 2 ):
 										l_index = len(polygons_new) + l_index
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index] * np.cos( (l_max_int - l_index) * angstep * np.pi / 180.0 )
 
 								if( int(step_left) == step_left ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_left_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int] * np.cos( (l_max_int - l_left_int) * angstep * np.pi / 180.0 )
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0)  * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0  * vector_correc[l_left_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int] * np.cos( (l_max_int - l_left_int) * angstep * np.pi / 180.0 )
 
 						else:
 							for l_ind in range(len(wh_max)):
@@ -1267,16 +1271,16 @@ if( source_dem == 2 ):
 										l_index = l_index - len(polygons_new)
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index] * np.cos( (l_max_int - l_index) * angstep * np.pi / 180.0 )
 
 								if( int(step_right) == step_right ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_right_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_right_int] * vector_correc[l_right_int] * np.cos( (l_max_int - l_right_int) * angstep * np.pi / 180.0 )
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_right_int], 4.0) , 2.0) * vector_correc[l_right_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_right_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_right_int] * vector_correc[l_right_int] * np.cos( (l_max_int - l_right_int) * angstep * np.pi / 180.0 )
 
 
 								for l in range(1,int(step_left)):
@@ -1285,16 +1289,16 @@ if( source_dem == 2 ):
 										l_index = len(polygons_new) + l_index
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_index], 4.0) , 2.0) * vector_correc[l_index]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_index]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_index] * vector_correc[l_index] * np.cos( (l_max_int - l_index) * angstep * np.pi / 180.0 )
 
 								if( int(step_left) == step_left ):
 									wh_sum[l_max_int] = wh_sum[l_max_int] + 0.5 * np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 0.5 * vector_correc[l_left_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + 0.5 * polygons_new[l_left_int] * vector_correc[l_left_int] * np.cos( (l_max_int - l_left_int) * angstep * np.pi / 180.0 )
 								else:
 									wh_sum[l_max_int] = wh_sum[l_max_int] + np.power( np.sqrt(polygon[j][6]) - 0.125 * const_k * np.power(polygons_new[l_left_int], 4.0) , 2.0) * vector_correc[l_left_int]
 									ter_sum[l_max_int] = ter_sum[l_max_int] + 1.0 * vector_correc[l_left_int]
-									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int]
+									pos_sum[l_max_int] = pos_sum[l_max_int] + polygons_new[l_left_int] * vector_correc[l_left_int] * np.cos( (l_max_int - l_left_int) * angstep * np.pi / 180.0 )
 
 					for l in wh_max:
 						lint = np.int(l)
@@ -1393,7 +1397,7 @@ if((source_dem == 1 or source_dem == 3) and (plot_flag == 1)):
 		CS = plt.contourf(matrix_lon, matrix_lat, data_cones, 100, vmin = 0.0, vmax = 1.0,  alpha= 0.3, interpolation='linear', cmap=cmapr, antialiased=True )	
 		fmt = '%.2f'
 		plt.colorbar()
-		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones, np.array([val_down, val_up]), colors='r', interpolation='linear', linewidths = 0.1)
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones, np.array([val_down, val_up]), colors='r', interpolation='linear', linewidths = 1.0)
 		plt.clabel(CS_lines, fontsize = 7, colors='k', fmt=fmt)
 	else:
 		CS_Topo = plt.contourf(matrix_lon,matrix_lat,Topography, 100, alpha = 1.0, cmap = cmapg ,antialiased=True)
@@ -1413,8 +1417,139 @@ if((source_dem == 1 or source_dem == 3) and (plot_flag == 1)):
 		plt.plot( lon_cen_vector[i], lat_cen_vector[i], 'r.', markersize=2)
 
 	if( N == 1 ):
+		data_cones_2 = np.nan_to_num(data_cones)
+		data_cones_3 = np.nan_to_num(data_cones)
+		data_cones_4 = np.nan_to_num(data_cones)
+		data_cones_5 = np.nan_to_num(data_cones)
+		data_cones_6 = np.nan_to_num(data_cones)
+		data_cones_7 = np.nan_to_num(data_cones)
+		data_cones_8 = np.nan_to_num(data_cones)
+		data_cones_9 = np.nan_to_num(data_cones)
+		data_cones_10 = np.nan_to_num(data_cones)
+		data_cones_11 = np.nan_to_num(data_cones)
+		data_cones_12 = np.nan_to_num(data_cones)
+		data_cones_13 = np.nan_to_num(data_cones)
+		data_cones_14 = np.nan_to_num(data_cones)
+		data_cones_15 = np.nan_to_num(data_cones)
+		data_cones_16 = np.nan_to_num(data_cones)
+		data_cones_17 = np.nan_to_num(data_cones)
+		data_cones_18 = np.nan_to_num(data_cones)
+		data_cones_19 = np.nan_to_num(data_cones)
+		data_cones_20 = np.nan_to_num(data_cones)
+		data_cones_21 = np.nan_to_num(data_cones)
+		data_cones_22 = np.nan_to_num(data_cones)
+		data_cones_23 = np.nan_to_num(data_cones)
+		data_cones_24 = np.nan_to_num(data_cones)
+		data_cones_25 = np.nan_to_num(data_cones)
+		data_cones_26 = np.nan_to_num(data_cones)
+		data_cones_27 = np.nan_to_num(data_cones)
+
+		data_cones_2[data_cones_2[:,:] < 1.0] = 0.0  
+		data_cones_2[data_cones_2[:,:] >= 1.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_2, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_3[data_cones_3[:,:] < 2.0] = 0.0  
+		data_cones_3[data_cones_3[:,:] >= 2.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_3, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_4[data_cones_4[:,:] < 3.0] = 0.0  
+		data_cones_4[data_cones_4[:,:] >= 3.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_4, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_5[data_cones_5[:,:] < 4.0] = 0.0  
+		data_cones_5[data_cones_5[:,:] >= 4.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_5, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_6[data_cones_6[:,:] < 5.0] = 0.0  
+		data_cones_6[data_cones_6[:,:] >= 5.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_6, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_7[data_cones_7[:,:] < 6.0] = 0.0  
+		data_cones_7[data_cones_7[:,:] >= 6.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_7, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_8[data_cones_8[:,:] < 7.0] = 0.0  
+		data_cones_8[data_cones_8[:,:] >= 7.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_8, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_9[data_cones_9[:,:] < 8.0] = 0.0  
+		data_cones_9[data_cones_9[:,:] >= 8.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_9, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_10[data_cones_10[:,:] < 9.0] = 0.0  
+		data_cones_10[data_cones_10[:,:] >= 9.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_10, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_11[data_cones_11[:,:] < 10.0] = 0.0  
+		data_cones_11[data_cones_11[:,:] >= 10.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_11, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_12[data_cones_12[:,:] < 11.0] = 0.0  
+		data_cones_12[data_cones_12[:,:] >= 11.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_12, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_13[data_cones_13[:,:] < 12.0] = 0.0  
+		data_cones_13[data_cones_13[:,:] >= 12.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_13, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_14[data_cones_14[:,:] < 13.0] = 0.0  
+		data_cones_14[data_cones_14[:,:] >= 13.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_14, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_15[data_cones_15[:,:] < 14.0] = 0.0  
+		data_cones_15[data_cones_15[:,:] >= 14.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_15, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_16[data_cones_16[:,:] < 15.0] = 0.0  
+		data_cones_16[data_cones_16[:,:] >= 15.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_16, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_17[data_cones_17[:,:] < 16.0] = 0.0  
+		data_cones_17[data_cones_17[:,:] >= 16.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_17, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_18[data_cones_18[:,:] < 17.0] = 0.0  
+		data_cones_18[data_cones_18[:,:] >= 17.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_18, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_19[data_cones_19[:,:] < 18.0] = 0.0  
+		data_cones_19[data_cones_19[:,:] >= 18.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_19, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_20[data_cones_20[:,:] < 19.0] = 0.0  
+		data_cones_20[data_cones_20[:,:] >= 19.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_20, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_21[data_cones_21[:,:] < 20.0] = 0.0  
+		data_cones_21[data_cones_21[:,:] >= 20.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_21, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_22[data_cones_22[:,:] < 21.0] = 0.0  
+		data_cones_22[data_cones_22[:,:] >= 21.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_22, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_23[data_cones_23[:,:] < 22.0] = 0.0  
+		data_cones_23[data_cones_23[:,:] >= 22.0] = 1.0  
+		CS_lines = plt.contour(matrix_lon,matrix_lat,data_cones_23, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_24[data_cones_24[:,:] < 23.0] = 0.0  
+		data_cones_24[data_cones_24[:,:] >= 23.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_24, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_25[data_cones_25[:,:] < 24.0] = 0.0  
+		data_cones_25[data_cones_25[:,:] >= 24.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_25, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_26[data_cones_26[:,:] < 25.0] = 0.0  
+		data_cones_26[data_cones_26[:,:] >= 25.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_26, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
+		data_cones_27[data_cones_27[:,:] < 26.0] = 0.0  
+		data_cones_27[data_cones_27[:,:] >= 26.0] = 1.0  
+		CS_lines_2 = plt.contour(matrix_lon,matrix_lat,data_cones_27, 1.0 , colors='r', interpolation='nearest', linewidths = 1.0)
+
 		for i in range(1,len(polygon)):
-			plt.plot( polygon[i][0],polygon[i][1], 'b.', markersize=4)
+			plt.plot( polygon[i][0],polygon[i][1], 'b.', markersize=2)
 
 	plt.savefig('Results/' + run_name + '/Map.png')
 
