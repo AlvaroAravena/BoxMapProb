@@ -1383,7 +1383,7 @@ if( save_data == 1 ):
 		for i in range(output_cells_lat-1,-1,-1):
 			text_file.write('\n')
 			for j in range(0, output_cells_lon):
-				text_file.write(' ' + str(data_cones_save ))
+				text_file.write(' ' + str(data_cones_save[i,j] ))
 		text_file.close()
 
 	np.savetxt('Results/' + run_name + '/' + 'data_cones.txt', data_cones_save, fmt='%.2e')
