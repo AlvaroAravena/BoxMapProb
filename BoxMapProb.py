@@ -79,7 +79,7 @@ except:
 line = file_txt.readlines()
 file_txt.close()
 
-[run_name, source_dem, lon1, lon2, lat1, lat2, g] = ['run_default', 1, np.nan, np.nan, np.nan, np.nan, 9.8]
+[run_name, source_dem, lon1, lon2, lat1, lat2, g, topography_file] = ['run_default', 1, np.nan, np.nan, np.nan, np.nan, 9.8, 'Topography_3.txt']
 [dist_source, var_cen, lon_cen, lat_cen, east_cen, north_cen, azimuth_lin] = [1, 0.0, np.nan, np.nan, np.nan, np.nan, np.nan]
 [length_lin, radius_rad, ang1_rad, ang2_rad] = [np.nan, np.nan, np.nan, np.nan]
 [volume, ws, phi_0, Fr, rho_p, rho_gas, var_volume, var_ws, var_phi_0, var_Fr, var_rho_p,  var_rho_gas, N, max_levels, save_data, dist_input, redist_volume, plot_flag, sea_flag] = [np.nan, 2.0, 0.02, 1.0, 1800.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100, 1, 0, 1, 4, 1, 0]
@@ -91,6 +91,9 @@ for i in range(0,len(line)):
 		if( aux[0][0] != '#'):
 			if( aux[0] == 'run_name'):
 				run_name = aux[1]
+			if( aux[0] == 'topography_file'):
+				topography_file = aux[1]
+				topography_file = topography_file.replace("'","")
 			if( aux[0] == 'source_dem'):
 				source_dem = int(aux[1])
 			if( aux[0] == 'lon1'):
@@ -240,9 +243,9 @@ if(source_dem == 1):
 if(source_dem == 2):
 	print('Reading map')
 	try:
-		file_txt = open('input_DEM.asc')
+		file_txt = open(topography_file)
 	except:
-		print('input_DEM.asc not found in ' + str(current_path))
+		print(topography_file +' not found in ' + str(current_path))
 		sys.exit(0)
 	line = file_txt.readlines()
 	file_txt.close()
@@ -286,9 +289,9 @@ if(source_dem == 2):
 if(source_dem == 3):
 	print('Reading map')
 	try:
-		file_txt = open('Topography_3.txt')
+		file_txt = open(topography_file)
 	except:
-		print('Topography_3.txt not found in ' + str(current_path))
+		print(topography_file +' not found in ' + str(current_path))
 		sys.exit(0)
 	line = file_txt.readlines()
 	file_txt.close()
