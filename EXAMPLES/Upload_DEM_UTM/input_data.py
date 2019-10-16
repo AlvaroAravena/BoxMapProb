@@ -8,7 +8,7 @@ run_name = Upload_DEM_UTM
 # (Simulations with source_dem = 1 and save_data = 1 create a compatible topography file for source_dem = 3 in Results
 # called Topography_3.txt).
 source_dem = 2
-topography_file = 'input_DEM.asc'
+topography_file = input_DEM.asc
 
 # Map limits (only considered if source_dem = 1)
 # lon1 = longitude of the first limit of the map
@@ -72,4 +72,4 @@ N = 300
 save_data = 1
 
 # Assumption for redistributing pyroclastic material (1, 2, 3 or 4. Please use 4)
-redist_energy = 4
+redist_volume = 4

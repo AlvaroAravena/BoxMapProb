@@ -75,4 +75,4 @@ N = 100
 save_data = 1
 
 # Assumption for redistributing pyroclastic material (1, 2, 3 or 4. Please use 4)
-redist_energy = 4
+redist_volume = 4
