@@ -14,10 +14,10 @@ source_dem = 1
 # lon2 = longitude of the second limit of the map 
 # lat1 = latitude of the first limit of the map
 # lat2 = latitude of the second limit of the map
-lon1 = -89.5
+lon1 = -89.4
 lon2 = -89.2
-lat1 = 13.6
-lat2 = 13.9
+lat1 = 13.65
+lat2 = 13.85
 
 # Maximum order of secondary collapses
 max_levels = 30
