@@ -188,12 +188,6 @@ if(source_dem == 3 and ( np.isnan( lon_cen ) or np.isnan( lat_cen )  ) ):
 	print('Problems with input parameters')
 	sys.exit(0)
 
-save_direction = 0
-direction = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]
-if(save_direction == 0):
-	length_direction = 0
-else:
-	length_direction = len(direction)
 
 # IMPORT MAP
 if(source_dem == 1):
@@ -586,7 +580,7 @@ if(source_dem == 2):
 print('Computing box-model')
 
 angstep = 10
-distep = 3
+distep = 10
 anglen = 360 / angstep
 pix_min = 0.0
 val_resolution = 3
@@ -613,7 +607,7 @@ if( redist_volume == 3 or redist_volume == 4 ):
 	index_max = int(anglen/2 - 1)
 
 if( save_data == 1 ):
-	summary_data = np.zeros((N, 11 + length_direction))
+	summary_data = np.zeros((N, 11))
 	summary_data[:,0] = volume_vector
 	summary_data[:,1] = ws_vector
 	summary_data[:,2] = phi_0_vector
@@ -659,28 +653,6 @@ if(source_dem == 1 or source_dem == 3):
 		rho_gas_current = rho_gas_vector[i]
 		Fr_current = Fr_vector[i]
 		gp_current = g * (rho_p_current - rho_gas_current ) / rho_gas_current
-
-		if(save_direction == 1):
-			data_direction = np.zeros((cells_lat,cells_lon,length_direction))
-			wh_negative = np.where( (matrix_lat - lat_cen) <= 0 )
-			ang_direction = 180 * np.arctan( (matrix_lon - lon_cen ) * (step_lon_m / step_lon_deg ) / (matrix_lat - lat_cen ) / (step_lat_m / step_lat_deg ) ) / np.pi
-			ang_direction[wh_negative] = ang_direction[wh_negative] + 180.0
-			ang_direction[np.where(ang_direction < 0)] = ang_direction[np.where(ang_direction < 0)] + 360.0	
-			for ii in range(length_direction):
-				matrix_aux_1 = np.zeros((cells_lat,cells_lon))
-				matrix_aux_2 = np.zeros((cells_lat,cells_lon))
-				if(ii < length_direction - 1):
-					wh_direction_1 = np.where(ang_direction > direction[ii])
-					wh_direction_2 = np.where(ang_direction <= direction[ii + 1])
-					matrix_aux_1[wh_direction_1] = 1
-					matrix_aux_2[wh_direction_2] = 1
-					data_direction[:,:,ii] = matrix_aux_1 * matrix_aux_2
-				else:
-					wh_direction_1 = np.where(ang_direction > direction[ii])
-					wh_direction_2 = np.where(ang_direction <= direction[0])
-					matrix_aux_1[wh_direction_1] = 1
-					matrix_aux_2[wh_direction_2] = 1
-					data_direction[:,:,ii] = np.maximum(matrix_aux_1, matrix_aux_2)
 
 		for j in range(10000): 
 
@@ -1046,12 +1018,6 @@ if(source_dem == 1 or source_dem == 3):
 
 			distances = np.power(np.power(( matrix_lon - lon_cen_vector[i]) * (step_lon_m / step_lon_deg),2) + np.power(( matrix_lat - lat_cen_vector[i])*(step_lat_m / step_lat_deg),2),0.5) 
 
-			if(save_direction == 1):
-				for ii in range(length_direction):
-					distances_corrected = distances * data_direction[:,:,ii]
-					distances_corrected = distances_corrected * data_step[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ]
-					summary_data[i,11 + ii]  = distances_corrected.max() / 1000.0
-
 			distances = distances * data_step[ range(len(data_cones[:,0]) -1 , -1 , -1 ) , : ]
 			summary_data[i,8] = sum(sum(data_step)) * area_pixel
 			summary_data[i,9] = distances.max() / 1000.0
@@ -1165,7 +1131,6 @@ if( source_dem == 2 ):
 						h = interpol_pos(east_cor, north_cor, cellsize, cellsize, polygon[j][0] + distance * cos(angle_rad) , polygon[j][1] + distance*sin(angle_rad) , n_east, n_north, Topography)
 						h_min = min(h, h_min)
 						h_boxmodel = ( 1 / (2 * g) ) * np.power( ( const_c * np.power(Lmax, 1.0/3.0) ) / ( ( distance / Lmax) * np.power( cosh(atanh( np.power( distance / Lmax, 2.0) )) , 2.0)  ) , 2.0)
-						if( h >= h_min + h_boxmodel ):
 							polygon_xy_res3.append((int((polygon[j][0] + (distance-distep)* cos(angle_rad) - east_cor) * n_east / ( cellsize * ( n_east - 1 ) ) ), int((polygon[j][1] + (distance-distep)*sin(angle_rad) - north_cor) * n_north / ( cellsize * ( n_north - 1 ) ))))
 							break
 
