@@ -1131,6 +1131,7 @@ if( source_dem == 2 ):
 						h = interpol_pos(east_cor, north_cor, cellsize, cellsize, polygon[j][0] + distance * cos(angle_rad) , polygon[j][1] + distance*sin(angle_rad) , n_east, n_north, Topography)
 						h_min = min(h, h_min)
 						h_boxmodel = ( 1 / (2 * g) ) * np.power( ( const_c * np.power(Lmax, 1.0/3.0) ) / ( ( distance / Lmax) * np.power( cosh(atanh( np.power( distance / Lmax, 2.0) )) , 2.0)  ) , 2.0)
+						if( h >= h_min + h_boxmodel ):
 							polygon_xy_res3.append((int((polygon[j][0] + (distance-distep)* cos(angle_rad) - east_cor) * n_east / ( cellsize * ( n_east - 1 ) ) ), int((polygon[j][1] + (distance-distep)*sin(angle_rad) - north_cor) * n_north / ( cellsize * ( n_north - 1 ) ))))
 							break
 
