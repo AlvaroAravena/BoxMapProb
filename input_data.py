@@ -1,5 +1,5 @@
 # Name of the run (used to save the parameters and the output)
-run_name = Example
+run_name = Upload_DEM_UTM
 
 # Source of DEM
 # source_dem = type of input data (1 => SRTM 30 m / 2 => Uploaded DEM (UTM) / 3 => Uploaded Data (lat,lon)).
@@ -7,17 +7,14 @@ run_name = Example
 # (see examples of source_dem = 2 in EXAMPLES/Upload_DEM_UTM and of source_dem = 3 in EXAMPLES/Upload_DEM_deg).
 # (Simulations with source_dem = 1 and save_data = 1 create a compatible topography file for source_dem = 3 in Results
 # called Topography_3.txt).
-source_dem = 1
+source_dem = 2
+topography_file = input_DEM.asc
 
 # Map limits (only considered if source_dem = 1)
 # lon1 = longitude of the first limit of the map
 # lon2 = longitude of the second limit of the map 
 # lat1 = latitude of the first limit of the map
 # lat2 = latitude of the second limit of the map
-lon1 = -72.8
-lon2 = -72.5
-lat1 = -42.95
-lat2 = -42.75
 
 # Maximum order of secondary collapses
 max_levels = 30
@@ -36,9 +33,9 @@ dist_source = 1
 # radius_rad = radius of the circumference arch that define the collapse zone (in meters, only considered if dist_source = 3)
 # ang1_rad = initial angle of the circumference arch that define the collapse zone (in degrees, only considered if dist_source = 3. Anticlockwise)
 # ang2_rad = initial angle of the circumference arch that define the collapse zone (in degrees, only considered if dist_source = 3. Anticlockwise)
-lon_cen = -72.65
-lat_cen = -42.835
-var_cen = 300.0
+east_cen = 501000.0
+north_cen = 4178000.0
+var_cen = 100.0
 
 # Other parameters of box model
 # volume = collapsing volume (in cubic meters)
@@ -54,13 +51,13 @@ var_cen = 300.0
 # var_rho_p = uncertainty of pyroclast density (in kg/m3)
 # var_rho_gas = uncertainty of gas density (in kg/m3)
 # dist_input = type of distribution for volume, ws, phi_0, Fr, rho_p and rho_gas (1 => Gaussian / 2 => Uniform)
-volume = 100000000.0
+volume = 5000000.0
 ws = 0.6
 phi_0 = 0.01
 Fr = 1.1
-rho_p = 900.0
+rho_p = 1500.0
 rho_gas = 1.1
-var_volume = 30000000.0
+var_volume = 1000000.0
 var_ws = 0.4
 var_phi_0 = 0.005
 var_Fr = 0.1
@@ -69,7 +66,7 @@ var_rho_gas = 0.1
 dist_input = 2
 
 # Number of simulations computed by the code
-N = 100
+N = 10
 
 # Save results in files txt ( 1 => Yes / 0 => No )
 save_data = 1

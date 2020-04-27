@@ -72,7 +72,7 @@ print('Reading input file')
 
 current_path = os.getcwd()
 try:
-	file_txt = open('input_data.py')
+	file_txt = open('input_data.py', encoding = 'utf-8')
 except:
 	print('input_data.py not found in ' + str(current_path))
 	sys.exit(0)
@@ -592,13 +592,13 @@ anglen_res3 = 360 / angstep_res3
 if( redist_volume == 3 or redist_volume == 4 ):
 	factor_mult = 50.0
 	center_elim = 0.5
-	aux_backward = 1 / (1 + np.exp(factor_mult * (np.linspace(0.0, 1.0, anglen/2 + 1) - center_elim) ) )
+	aux_backward = 1 / (1 + np.exp(factor_mult * (np.linspace(0.0, 1.0, num = int(anglen/2 + 1)) - center_elim) ) )
 	vector_backward_1 = np.zeros(int(anglen))
 	vector_backward_1[0:int(anglen/2 - 1)] = aux_backward[int(anglen/2-1):0:-1]
 	vector_backward_1[int(anglen/2-1):] = aux_backward[:]
 	vector_backward_1[vector_backward_1 < 1e-3] = 0
 	vector_backward_1[vector_backward_1 > 1.0 - 1e-3] = 1.0
-	aux_backward = 1 / (1 + np.exp(factor_mult * (np.linspace(1.0/(anglen/2), 1.0 - 1.0/(anglen/2), anglen/2 ) - center_elim) ) )
+	aux_backward = 1 / (1 + np.exp(factor_mult * (np.linspace(1.0/(anglen/2), 1.0 - 1.0/(anglen/2), num = int(anglen/2) ) - center_elim) ) )
 	vector_backward_2 = np.zeros(int(anglen))
 	vector_backward_2[0:int(anglen/2)] = aux_backward[::-1]
 	vector_backward_2[int(anglen/2):] = aux_backward[:]

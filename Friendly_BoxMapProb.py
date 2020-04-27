@@ -8,7 +8,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import matplotlib
 matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 
 class MyFirstGUI:
@@ -707,7 +707,7 @@ class MyFirstGUI:
                         messagebox.showerror("Error", 'input_data.py not found in ' + str(self.current_path))
                         return
                 self.modify_input()
-                os.system('python BoxMapProb.py')
+                os.system('python3 BoxMapProb.py')
         else:
                 if(self.var_dem.get() == "Input DEM (utm)"):
                         try:
@@ -724,7 +724,7 @@ class MyFirstGUI:
                                 messagebox.showerror("Error", 'Topography_3.asc not found in ' + str(self.current_path))
                                 return
                 self.create_input()
-                os.system('python BoxMapProb.py')
+                os.system('python3 BoxMapProb.py')
 
         file_txt = open('input_data.py')
         line = file_txt.readlines()
