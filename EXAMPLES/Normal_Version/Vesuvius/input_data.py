@@ -1,5 +1,5 @@
 # Name of the run (used to save the parameters and the output)
-run_name = Example
+run_name = Vesuvius
 
 # Type of simulation (1: Default mode: Construction of probability map. 2: Calibration mode).
 type_sim = 1
@@ -21,10 +21,10 @@ source_dem = 1
 # lon2 = longitude of the second limit of the map 
 # lat1 = latitude of the first limit of the map
 # lat2 = latitude of the second limit of the map
-lon1 = -72.8
-lon2 = -72.5
-lat1 = -42.95
-lat2 = -42.75
+lon1 = 14.2
+lon2 = 14.7
+lat1 = 40.6
+lat2 = 41.0
 
 # Parameters of the collapse position.
 # vent_type = type of distribution of collapse position (1: Pointwise. 2: Linear. 3: Circumference arch. 4: Input file. Only considered if type_sim = 1, otherwise vent_type = 1).
@@ -41,8 +41,8 @@ lat2 = -42.75
 # dist_input_cen = type of distribution for collapse position variability (1: Gaussian. 2: Uniform. Only considered if type_sim = 1 and vent_type = 1, 2 or 3).
 # input_file_vent = name of the file with the set of values for vent positions (only considered if vent_type = 4).
 vent_type = 1
-lon_cen = -72.650
-lat_cen = -42.835
+lon_cen = 14.427
+lat_cen = 40.822
 var_cen = 300.0
 dist_input_cen = 1
 

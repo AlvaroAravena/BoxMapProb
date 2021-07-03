@@ -1,5 +1,5 @@
 # Name of the run (used to save the parameters and the output)
-run_name = Example
+run_name = Chaiten_B
 
 # Type of simulation (1: Default mode: Construction of probability map. 2: Calibration mode).
 type_sim = 1
@@ -113,7 +113,7 @@ rho_gas = 1.1
 var_rho_gas = 0.1
 
 # Maximum order of secondary collapses
-max_levels = 100
+max_levels = 1
 
 # Number of simulations computed by the code
 N = 100

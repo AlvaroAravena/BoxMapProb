@@ -1,0 +1,23 @@
+Simulation type: Default mode
+Number of generations: 1
+Number of Simulations: 100
+
+Source DEM: SRTM 30 m
+Longitude 1: -72.8
+Longitude 2: -72.5
+Latitude 1: -42.95
+Latitude 2: -42.75
+
+Vent type: Pointwise
+Longitude collapse [deg]: -72.65
+Latitude collapse [deg]: -42.835
+Uncertainty of vent position [m]: 100.0
+Probability distribution of uncertainty of vent position: Gaussian
+
+Distribution type for PDC properties: Calibration-based sampling
+Calibration type: Inundation area-based
+File name: ./EXAMPLES/User-Friendly_Version/Chaiten_C/Calibration_Data.txt
+Distribution type for inundation area: Gaussian
+Expected inundation area [km2]: 2.0
+Uncertainty of inundation area [km2]: 1.0
+

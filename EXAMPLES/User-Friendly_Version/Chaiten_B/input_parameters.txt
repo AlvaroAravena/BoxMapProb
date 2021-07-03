@@ -1,0 +1,36 @@
+Simulation type: Default mode
+Number of generations: 1
+Number of Simulations: 100
+
+Source DEM: SRTM 30 m
+Longitude 1: -72.8
+Longitude 2: -72.5
+Latitude 1: -42.95
+Latitude 2: -42.75
+
+Vent type: Pointwise
+Longitude collapse [deg]: -72.65
+Latitude collapse [deg]: -42.835
+Uncertainty of vent position [m]: 300.0
+Probability distribution of uncertainty of vent position: Gaussian
+
+Distribution type for PDC properties: Predefined distributions
+Distribution type for collapsing volume: Gaussian
+Expected collapsing volume [m3]: 10000000.0
+Uncertainty of collapsing volume [m3]: 2000000.0
+Distribution type for initial concentration: Gaussian
+Expected initial concentration: 0.01
+Uncertainty of initial concentration: 0.005
+Distribution type for sedimentation velocity: Gaussian
+Expected sedimentation velocity [m/s]: 0.6
+Uncertainty of sedimentation velocity [m/s]: 0.4
+Distribution type for Froude number: Gaussian
+Expected Froude number: 1.1
+Uncertainty of Froude number: 0.1
+Distribution type for pyroclasts density: Gaussian
+Expected pyroclasts density [kg/m3]: 1500.0
+Uncertainty of pyroclasts density [kg/m3]: 200.0
+Distribution type for gas density: Gaussian
+Expected gas density [kg/m3]: 1.1
+Uncertainty of gas density [kg/m3]: 0.1
+
