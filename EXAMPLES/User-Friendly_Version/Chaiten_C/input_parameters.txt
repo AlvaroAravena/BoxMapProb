@@ -16,8 +16,8 @@ Probability distribution of uncertainty of vent position: Gaussian
 
 Distribution type for PDC properties: Predefined distributions
 Distribution type for collapsing volume: Uniform
-Expected collapsing volume [m3]: 100500000.0
-Uncertainty of collapsing volume [m3]: 99500000.0
+Expected collapsing volume [m3]: 1000500000.0
+Uncertainty of collapsing volume [m3]: 999500000.0
 Distribution type for initial concentration: Uniform
 Expected initial concentration: 0.02
 Uncertainty of initial concentration: 0.015

@@ -43,7 +43,7 @@ def read_input():
 	[ area_calibration_k , area_calibration_theta , file_cumulative_area , max_levels , N , save_data ] = [ np.nan , np.nan , '' , np.nan , np.nan , np.nan ]
 	[ redist_volume , plot_flag , sea_flag ] = [ 4 , 1 , 0 ]
 	for i in range( 0 , len( line ) ):
-		line[i] = line[i].replace( '=' , ' ' )
+		line[ i ] = line[ i ].replace( '=' , ' ' )
 		aux = line[ i ].split()
 		if( len( aux ) > 0 ):
 			if( aux[ 0 ][ 0 ] != '#' ):
@@ -73,7 +73,7 @@ def read_input():
 				if( aux[ 0 ] == 'lat2' ):
 					lat2 = float( aux[ 1 ] )
 				if( aux[ 0 ] == 'g' ):
-					g = float( aux[ 1 ] )					
+					g = float( aux[ 1 ] )
 				if( aux[ 0 ] == 'vent_type' ):
 					vent_type = int( aux[ 1 ] )
 				if( aux[ 0 ] == 'lon_cen' ):
@@ -97,7 +97,7 @@ def read_input():
 				if( aux[ 0 ] == 'var_cen' ):
 					var_cen = float( aux[ 1 ] )
 				if( aux[ 0 ] == 'dist_input_cen' ):
-					dist_input_cen = int( aux[ 1 ] )					
+					dist_input_cen = int( aux[ 1 ] )
 				if( aux[ 0 ] == 'input_file_vent' ):
 					input_file_vent = aux[ 1 ]
 					input_file_vent = input_file_vent.replace( "'" , "" )
@@ -167,9 +167,9 @@ def read_input():
 					input_file_cal = aux[ 1 ]
 					input_file_cal = input_file_cal.replace( "'" , "" )
 				if( aux[ 0 ] == 'calibration_type' ):
-					calibration_type = int( aux[ 1 ] )					
+					calibration_type = int( aux[ 1 ] )
 				if( aux[ 0 ] == 'dist_distance_calibration' ):
-					dist_distance_calibration = int( aux[ 1 ] )	
+					dist_distance_calibration = int( aux[ 1 ] )
 				if( aux[ 0 ] == 'distance_calibration' ):
 					distance_calibration = float( aux[ 1 ] )
 				if( aux[ 0 ] == 'var_distance_calibration' ):
@@ -182,7 +182,7 @@ def read_input():
 					file_cumulative_distance = aux[ 1 ]
 					file_cumulative_distance = file_cumulative_distance.replace( "'" , "" )
 				if( aux[ 0 ] == 'dist_area_calibration' ):
-					dist_area_calibration = int( aux[ 1 ] )					
+					dist_area_calibration = int( aux[ 1 ] )
 				if( aux[ 0 ] == 'area_calibration' ):
 					area_calibration = float( aux[ 1 ] )
 				if( aux[ 0 ] == 'var_area_calibration' ):
@@ -266,7 +266,7 @@ def read_input():
 						sys.exit( 0 )
 					if( dist_distance_calibration == 5 and file_cumulative_distance == '' ):
 						print( 'Problems with input parameters. Variable file_cumulative_distance must be defined.' )
-						sys.exit( 0 )							
+						sys.exit( 0 )
 				if( calibration_type == 7 ):
 					if( not dist_area_calibration in [ 1 , 2 , 3 , 4 , 5 ] ):
 						print( 'Problems with input parameters. Variable dist_area_calibration must be defined properly.' )
@@ -279,7 +279,7 @@ def read_input():
 						sys.exit( 0 )
 					if( dist_area_calibration == 5 and file_cumulative_area == '' ):
 						print( 'Problems with input parameters. Variable file_cumulative_area must be defined.' )
-						sys.exit( 0 )		
+						sys.exit( 0 )
 	else:
 		vent_type = 1
 		var_cen = 0.0
@@ -410,7 +410,7 @@ def import_map( current_path , run_name , lon1 , lon2 , lat1 , lat2 , plot_flag 
 		Topography_Sea[ Topography_Sea[ : , : ] > 0 ] = np.nan
 		Topography_Sea = Topography_Sea * -1.0
 	else:
-                Topography_Sea = np.nan
+		Topography_Sea = np.nan
 	Topography = ( Topography + abs( Topography ) ) / 2.0
 	cells_lon = Topography.shape[ 1 ]
 	cells_lat = Topography.shape[ 0 ]
@@ -461,7 +461,7 @@ def read_map_utm( current_path , topography_file , plot_flag , sea_flag ):
 		Topography_Sea[ Topography_Sea[ : , : ] > 0 ] = np.nan
 		Topography_Sea = Topography_Sea * -1.0
 	else:
-                Topography_Sea = np.nan
+		Topography_Sea = np.nan
 	Topography = ( Topography + abs( Topography ) ) / 2.0
 
 	return [ Topography , Topography_Sea , n_north , n_east , cellsize , east_cor , north_cor ]
@@ -525,7 +525,7 @@ def read_map_deg( current_path , topography_file , plot_flag , sea_flag ):
 			if( len( Cities ) <= 5 ):
 				break
 	else:
-                Cities = []
+		Cities = []
 	return [ lon1 , lon2 , lat1 , lat2 , Cities , Topography , Topography_Sea , int( cells_lon ) , int( cells_lat ) ]
 
 def matrix_deg( lon1 , lon2 , lat1 , lat2 , cells_lon , cells_lat ):
@@ -587,10 +587,10 @@ def create_inputs( type_sim , type_input , dist_input_volume , dist_input_phi_0 
 		line = file_txt.readlines()
 		file_txt.close()
 		resolution = float( line[ 0 ] )
-		ws_vector = np.ones(N) * float( line[ 1 ] )
-		Fr_vector = np.ones(N) * float( line[ 2 ] )
-		rho_p_vector = np.ones(N) * float( line[ 3 ] )
-		rho_gas_vector = np.ones(N) * float( line[ 4 ] )
+		ws_vector = np.ones( N ) * float( line[ 1 ] )
+		Fr_vector = np.ones( N ) * float( line[ 2 ] )
+		rho_p_vector = np.ones( N ) * float( line[ 3 ] )
+		rho_gas_vector = np.ones( N ) * float( line[ 4 ] )
 		number_steps = int( np.sqrt( len( file_data[ : , 0 ] ) ) )
 		xi_sim = np.linspace( np.log10( np.min( file_data[ : , 0 ] ) ) , np.log10( np.max( file_data[ : , 0 ] ) ) , number_steps )
 		yi_sim = np.linspace( np.min( file_data[ : , 1 ] ) , np.max( file_data[ : , 1 ] ) , number_steps )
@@ -628,13 +628,13 @@ def create_inputs( type_sim , type_input , dist_input_volume , dist_input_phi_0 
 				z = np.reshape( file_data[ : , 6 ] , ( number_steps , number_steps ) )
 				interpolator = interpolate.interp2d( xi_sim , yi_sim , z , kind = 'cubic' )
 				zi_reshaped = np.reshape( interpolator( xi , yi ) , ( number_steps_dense * number_steps_dense , 1 ) )
-			Probability_Save = gaussian_filter( np.reshape( zi_reshaped * zi_reshaped / sum( zi_reshaped * zi_reshaped ) , ( number_steps_dense , number_steps_dense ) ) , 5 )
-			Probability = np.cumsum( np.reshape( Probability_Save , ( number_steps_dense * number_steps_dense , 1 ) ) / np.sum( np.reshape( Probability_Save , ( number_steps_dense * number_steps_dense , 1 ) ) ) )		
+			Probability_Save = gaussian_filter( np.reshape( zi_reshaped * zi_reshaped / sum( zi_reshaped * zi_reshaped ) , ( number_steps_dense , number_steps_dense ) ) , 1 )
+			Probability = np.cumsum( np.reshape( Probability_Save , ( number_steps_dense * number_steps_dense , 1 ) ) / np.sum( np.reshape( Probability_Save , ( number_steps_dense * number_steps_dense , 1 ) ) ) )
 			sampling = np.random.uniform( 0.0 , 1.0 , N )
 			sampling_volume = np.random.uniform( - 0.5 , 0.5 , N )
 			sampling_phi_0 = np.random.uniform( - 0.5 , 0.5 , N )
 			volume_vector = np.ones( ( N ) )
-			phi_0_vector = np.ones( ( N ) ) 			
+			phi_0_vector = np.ones( ( N ) )
 			for i in range( N ):
 				indexes = np.min( np.where( Probability > sampling[ i ] )[ 0 ] )
 				volume_vector[ i ] = np.power( 10.0 , ( Xi_reshaped[ indexes , 0 ] ) + sampling_volume[ i ] * stepx )
@@ -991,7 +991,7 @@ def create_vent_deg( vent_type , input_file_vent , lon_cen , lat_cen , var_cen ,
 		if( vent_type == 2 ):
 			pos_structure = np.random.uniform( -1 , 1 , N )
 			lon_cen_vector = lon_cen_vector + pos_structure * np.sin( azimuth_lin * np.pi / 180 ) * length_lin * step_lon_deg / step_lon_m
-			lat_cen_vector = lat_cen_vector + pos_structure * np.cos(azimuth_lin * np.pi / 180 ) * length_lin * step_lat_deg / step_lat_m
+			lat_cen_vector = lat_cen_vector + pos_structure * np.cos( azimuth_lin * np.pi / 180 ) * length_lin * step_lat_deg / step_lat_m
 		if( vent_type == 3 ):
 			pos_structure = ang1_rad + np.random.uniform( 0 , 1 , N ) * ( ang2_rad - ang1_rad )
 			lon_cen_vector = lon_cen_vector + np.cos( pos_structure * np.pi / 180 ) * radius_rad * step_lon_deg / step_lon_m
@@ -1083,7 +1083,7 @@ def read_comparison_polygon_deg( comparison_polygon , ang_cal , ang_cal_range , 
 		wh_negative = np.where( ( matrix_lat - lat_cen ) <= 0 )
 		ang_direction = 180 * np.arctan( ( matrix_lon - lon_cen ) * ( step_lon_m / step_lon_deg ) / ( matrix_lat - lat_cen ) / ( step_lat_m / step_lat_deg ) ) / np.pi
 		ang_direction[ wh_negative ] = ang_direction[ wh_negative ] + 180.0
-		ang_direction[ np.where( ang_direction < 0 ) ] = ang_direction[ np.where( ang_direction < 0 ) ] + 360.0	
+		ang_direction[ np.where( ang_direction < 0 ) ] = ang_direction[ np.where( ang_direction < 0 ) ] + 360.0
 		matrix_aux_1 = np.zeros( ( cells_lat , cells_lon ) )
 		matrix_aux_2 = np.zeros( ( cells_lat , cells_lon ) )
 		if( ang_cal - ang_cal_range / 2.0 < 0 ):
@@ -1137,9 +1137,9 @@ def read_comparison_polygon_utm( comparison_polygon , ang_cal , ang_cal_range , 
 			for j in range( len( cum_compare ) ):
 				if( dist_step[ i ] <= cum_compare[ j ] ):
 					if( j == 0 ):
-						factor = (cum_compare[ j ] - dist_step[ i ] ) / cum_compare[ j ]
+						factor = ( cum_compare[ j ] - dist_step[ i ] ) / cum_compare[ j ]
 					else:
-						factor = (cum_compare[ j ] - dist_step[ i ] ) / (cum_compare[ j ] - cum_compare[ j - 1 ] )
+						factor = ( cum_compare[ j ] - dist_step[ i ] ) / ( cum_compare[ j ] - cum_compare[ j - 1 ] )
 					vertices_compare[ i , 0 ] = ver_compare[ j + 1 ][ 0 ] * ( 1 - factor ) + ver_compare[ j ][ 0 ] * ( factor )
 					vertices_compare[ i , 1 ] = ver_compare[ j + 1 ][ 1 ] * ( 1 - factor ) + ver_compare[ j ][ 1 ] * ( factor )
 					break
@@ -1151,7 +1151,7 @@ def read_comparison_polygon_utm( comparison_polygon , ang_cal , ang_cal_range , 
 		wh_negative = np.where( ( matrix_north - north_cen ) <= 0 )
 		ang_direction = 180 * np.arctan( ( matrix_east - east_cen ) / ( matrix_north - north_cen ) ) / np.pi
 		ang_direction[ wh_negative ] = ang_direction[ wh_negative ] + 180.0
-		ang_direction[ np.where( ang_direction < 0 ) ] = ang_direction[ np.where( ang_direction < 0 ) ] + 360.0	
+		ang_direction[ np.where( ang_direction < 0 ) ] = ang_direction[ np.where( ang_direction < 0 ) ] + 360.0
 		matrix_aux_1 = np.zeros( ( n_north , n_east ) )
 		matrix_aux_2 = np.zeros( ( n_north , n_east ) )
 		if( ang_cal - ang_cal_range / 2.0 < 0 ):
@@ -1196,7 +1196,7 @@ def initial_definitions( redist_volume ):
 		vector_backward_1[ int( anglen / 2 - 1 ) : ] = aux_backward[ : ]
 		vector_backward_1[ vector_backward_1 < 1e-3 ] = 0
 		vector_backward_1[ vector_backward_1 > 1.0 - 1e-3 ] = 1.0
-		aux_backward = 1 / ( 1 + np.exp( factor_mult * (np.linspace( 1.0 / ( anglen / 2 ) , 1.0 - 1.0 / ( anglen / 2 ) , int( anglen / 2 ) ) - center_elim ) ) )
+		aux_backward = 1 / ( 1 + np.exp( factor_mult * ( np.linspace( 1.0 / ( anglen / 2 ) , 1.0 - 1.0 / ( anglen / 2 ) , int( anglen / 2 ) ) - center_elim ) ) )
 		vector_backward_2 = np.zeros( int( anglen ) )
 		vector_backward_2[ 0 : int( anglen / 2 ) ] = aux_backward[::-1]
 		vector_backward_2[ int( anglen / 2 ) : ] = aux_backward[ : ]
@@ -1253,7 +1253,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 	data_cones = np.zeros( ( cells_lat , cells_lon ) )
 	data_aux_t = np.ones( ( cells_lat , cells_lon ) )
 	data_aux_b = np.zeros( ( cells_lat , cells_lon ) )
-	vec_ang = np.arange( 0 , 360 , angstep)
+	vec_ang = np.arange( 0 , 360 , angstep )
 	vec_ang_res2 = np.arange( 0, 360, angstep_res2 )
 	vec_ang_res3 = np.arange( 0, 360, angstep_res3 )
 	for i in range( 0 , N ):
@@ -1271,7 +1271,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 		gp_current = g * ( rho_p_current - rho_gas_current ) / rho_gas_current
 		for j in range( 10000 ):
 			if( j == len( polygon ) ):
-				if( N == 1 ):			
+				if( N == 1 ):
 					data_cones = data_cones + data_step
 				break
 			if( max_levels < polygon[ j ][ 3 ] ):
@@ -1291,7 +1291,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 			const_k = ( ws_current / Fr_current ) * np.power( gp_current, -0.5 ) * np.power( polygon[ j ][ 5 ] / np.pi , -1.5 )
 			for angle_deg in vec_ang:
 				angle_rad = angle_deg * np.pi / 180
-				h_min = interpol_pos( lon1 , lat1 , step_lon_deg, step_lat_deg, polygon[ j ][ 0 ] , polygon[j][1] , cells_lon , cells_lat , Topography )
+				h_min = interpol_pos( lon1 , lat1 , step_lon_deg, step_lat_deg, polygon[ j ][ 0 ] , polygon[ j ][ 1 ] , cells_lon , cells_lat , Topography )
 				for distance in range( 0 , 10000000 , distep ):
 					if( distance > Lmax ):
 						polygons_new.append( Lmax )
@@ -1300,9 +1300,9 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 						break
 					h = interpol_pos( lon1 , lat1 , step_lon_deg , step_lat_deg , polygon[ j ][ 0 ] + distance * cos( angle_rad ) * step_lon_deg / step_lon_m , polygon[ j ][ 1 ] + distance * sin( angle_rad ) * step_lat_deg / step_lat_m , cells_lon , cells_lat , Topography )
 					h_min = min( h , h_min )
-					h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax, 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax, 2.0 ) ) ) , 2.0 ) ) , 2.0 )					
+					h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax, 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax, 2.0 ) ) ) , 2.0 ) ) , 2.0 )
 					if( h >= h_min + h_boxmodel or np.isnan( h ) ):
-						polygon_xy.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) * step_lon_deg / step_lon_m - lon1 ) * cells_lon / (lon2 - lon1 ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) * step_lat_deg / step_lat_m - lat1 ) * cells_lat / ( lat2 - lat1 ) ) ) )
+						polygon_xy.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) * step_lon_deg / step_lon_m - lon1 ) * cells_lon / ( lon2 - lon1 ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) * step_lat_deg / step_lat_m - lat1 ) * cells_lat / ( lat2 - lat1 ) ) ) )
 						polygons_new.append( distance - distep )
 						break
 			if( ( redist_volume == 3 or redist_volume == 4 ) and polygon[ j ][ 4 ] > -1 ):
@@ -1313,15 +1313,15 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 				else:
 					for ii in range( int( anglen ) ):
 						vector_correc[ ii ] = vector_backward_2[ int( ( ii - polygon[ j ][ 4 ] + index_max ) % anglen ) ]
-				polygons_new = polygons_new * vector_correc
 			else:
 				vector_correc = np.ones( int( anglen ) )
+			polygons_new = polygons_new * vector_correc
 			if( j == 0 ):
 				runout_min = min( polygons_new )
 			if( max( polygons_new ) > 500 and max( polygons_new ) < 5000 ):
 				for angle_deg in vec_ang_res2:
 					angle_rad = angle_deg * np.pi / 180
-					h_min = interpol_pos( lon1 , lat1 , step_lon_deg, step_lat_deg, polygon[ j ][ 0 ] , polygon[j][1] , cells_lon , cells_lat , Topography )
+					h_min = interpol_pos( lon1 , lat1 , step_lon_deg, step_lat_deg, polygon[ j ][ 0 ] , polygon[ j ][ 1 ] , cells_lon , cells_lat , Topography )
 					for distance in range( 0 , 10000000 , distep ):
 						if( distance > Lmax ):
 							distance = Lmax
@@ -1329,11 +1329,11 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 							break
 						h = interpol_pos( lon1 , lat1 , step_lon_deg , step_lat_deg , polygon[ j ][ 0 ] + distance * cos( angle_rad ) * step_lon_deg / step_lon_m , polygon[ j ][ 1 ] + distance * sin( angle_rad ) * step_lat_deg / step_lat_m , cells_lon , cells_lat , Topography )
 						h_min = min( h , h_min )
-						h_boxmodel = ( 1 / ( 2 * g) ) * np.power( ( const_c * np.power( Lmax, 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax, 2.0 ) ) ) , 2.0 ) ) , 2.0 )					
+						h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax, 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax, 2.0 ) ) ) , 2.0 ) ) , 2.0 )
 						if( h >= h_min + h_boxmodel or np.isnan( h ) ):
-							polygon_xy_res2.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) * step_lon_deg / step_lon_m - lon1 ) * cells_lon / (lon2 - lon1 ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) * step_lat_deg / step_lat_m - lat1 ) * cells_lat / ( lat2 - lat1 ) ) ) )
+							polygon_xy_res2.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) * step_lon_deg / step_lon_m - lon1 ) * cells_lon / ( lon2 - lon1 ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) * step_lat_deg / step_lat_m - lat1 ) * cells_lat / ( lat2 - lat1 ) ) ) )
 							break
-			elif( max(polygons_new) >= 5000 ):
+			elif( max( polygons_new ) >= 5000 ):
 				for angle_deg in vec_ang_res3:
 					angle_rad = angle_deg * np.pi / 180
 					h_min = interpol_pos( lon1 , lat1 , step_lon_deg , step_lat_deg , polygon[ j ][ 0 ] , polygon[ j ][ 1 ] , cells_lon , cells_lat , Topography )
@@ -1342,10 +1342,10 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 							distance = Lmax
 							polygon_xy_res3.append( ( int( ( polygon[ j ][ 0 ] + ( distance ) * cos( angle_rad ) * step_lon_deg / step_lon_m - lon1 ) * cells_lon / ( lon2 - lon1 ) ) , int( ( polygon[ j ][ 1 ] + ( distance ) * sin( angle_rad ) * step_lat_deg / step_lat_m - lat1 ) * cells_lat / ( lat2 - lat1 ) ) ) )
 							break
-						h = interpol_pos(lon1, lat1, step_lon_deg , step_lat_deg , polygon[ j ][ 0 ] + distance * cos( angle_rad ) * step_lon_deg / step_lon_m , polygon[ j ][ 1 ] + distance * sin( angle_rad ) * step_lat_deg / step_lat_m , cells_lon , cells_lat , Topography )
+						h = interpol_pos( lon1, lat1, step_lon_deg , step_lat_deg , polygon[ j ][ 0 ] + distance * cos( angle_rad ) * step_lon_deg / step_lon_m , polygon[ j ][ 1 ] + distance * sin( angle_rad ) * step_lat_deg / step_lat_m , cells_lon , cells_lat , Topography )
 						h_min = min( h , h_min )
-						h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax , 1.0 / 3.0 ) ) / ( ( distance / Lmax) * np.power( cosh( atanh( np.power( distance / Lmax , 2.0 ) ) ) , 2.0 ) ) , 2.0 )
-						if( h >= h_min + h_boxmodel ):
+						h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax , 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax , 2.0 ) ) ) , 2.0 ) ) , 2.0 )
+						if( h >= h_min + h_boxmodel or np.isnan( h ) ):
 							polygon_xy_res3.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) * step_lon_deg / step_lon_m - lon1 ) * cells_lon / ( lon2 - lon1 ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) * step_lat_deg / step_lat_m - lat1 ) * cells_lat / ( lat2 - lat1 ) ) ) )
 							break
 			img = Image.new( 'L' , ( cells_lon , cells_lat ) , 0 )
@@ -1362,8 +1362,8 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 				aux[ 1 : len( polygons_new ) + 1 ] = np.array( polygons_new )
 				aux[ 0 ] = polygons_new[ len( polygons_new ) - 1 ]
 				aux[ len( polygons_new ) + 1 ] = polygons_new[ 0 ]
-				der1 = ( aux[ 1 : len(aux) - 1 ] - aux[ 2 : len( aux ) ] )
-				der2 = ( aux[ 1 : len(aux) - 1 ] - aux[ 0 : len( aux ) - 2 ] )
+				der1 = ( aux[ 1 : len( aux ) - 1 ] - aux[ 2 : len( aux ) ] )
+				der2 = ( aux[ 1 : len( aux ) - 1 ] - aux[ 0 : len( aux ) - 2 ] )
 				wh1 = np.where( der1 >= 0 )
 				wh2 = np.where( der2 >= 0 )
 				wh_max = np.intersect1d( wh1[ 0 ] , wh2[ 0 ] )
@@ -1430,7 +1430,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 					if( redist_volume == 1 or redist_volume == 3 or len( wh_max ) == 1 ):
 						for l_max_real in wh_max:
 							lmax = np.int( l_max_real )
-							l_it = len( polygons_new ) - 1		
+							l_it = len( polygons_new ) - 1
 							for l in range( 1 , len( polygons_new ) ):
 								l_index = lmax + l
 								if( l_index >= len( polygons_new ) ):
@@ -1446,7 +1446,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 								if( l_index < 0 ):
 									l_index = l_index + len( polygons_new )
 								if( polygons_new[ lmax ] < polygons_new[ l_index ] ):
-									break					
+									break
 								wh_sum[ lmax ] = wh_sum[ lmax ] + np.power( np.sqrt( polygon[ j ][ 6 ] ) - 0.125 * const_k * np.power( polygons_new[ l_index ] , 4.0 ) , 2.0 ) * vector_correc[ l_index ]
 								ter_sum[ lmax ] = ter_sum[ lmax ] + 1.0 * vector_correc[ l_index ]
 								pos_sum[ lmax ] = pos_sum[ lmax ] + polygons_new[ l_index ] * vector_correc[ l_index ]
@@ -1455,7 +1455,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 						wh_min = np.sort( wh_min )
 						if( wh_min[ 0 ] > wh_max[ 0 ] ):
 							for l_ind in range( len( wh_max ) ):
-								l_max_real = wh_max[ l_ind ]	
+								l_max_real = wh_max[ l_ind ]
 								l_max_int = np.int( l_max_real )
 								step_right = wh_min[ l_ind ] - l_max_int
 								l_right_real = wh_min[ l_ind ]
@@ -1501,12 +1501,12 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 									pos_sum[ l_max_int ] = pos_sum[ l_max_int ] + polygons_new[ l_left_int ] * vector_correc[ l_left_int ]
 						else:
 							for l_ind in range( len( wh_max ) ):
-								l_max_real = wh_max[ l_ind ]	
+								l_max_real = wh_max[ l_ind ]
 								l_max_int = np.int( l_max_real )
 								step_left = l_max_int - wh_min[ l_ind ]
 								l_left_real = wh_min[ l_ind ]
 								l_left_int = np.int( l_left_real )
-								if(l_ind == len( wh_max ) - 1 ):
+								if( l_ind == len( wh_max ) - 1 ):
 									step_right = anglen - l_max_int + wh_min[ 0 ]
 									l_right_real = wh_min[ 0 ]
 									right_index = 0
@@ -1537,7 +1537,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 									wh_sum[ l_max_int ] = wh_sum[ l_max_int ] + np.power( np.sqrt( polygon[ j ][ 6 ] ) - 0.125 * const_k * np.power( polygons_new[ l_index ] , 4.0 ) , 2.0 ) * vector_correc[ l_index ]
 									ter_sum[ l_max_int ] = ter_sum[ l_max_int ] + 1.0 * vector_correc[ l_index ]
 									pos_sum[ l_max_int ] = pos_sum[ l_max_int ] + polygons_new[ l_index ] * vector_correc[ l_index ]
-								if( int(step_left) == step_left ):
+								if( int( step_left ) == step_left ):
 									wh_sum[ l_max_int ] = wh_sum[ l_max_int ] + 0.5 * np.power( np.sqrt( polygon[ j ][ 6 ] ) - 0.125 * const_k * np.power( polygons_new[ l_left_int ] , 4.0 ) , 2.0 ) * vector_correc[ l_left_int ]
 									ter_sum[ l_max_int ] = ter_sum[ l_max_int ] + 0.5 * vector_correc[ l_left_int ]
 									pos_sum[ l_max_int ] = pos_sum[ l_max_int ] + 0.5 * polygons_new[ l_left_int ] * vector_correc[ l_left_int ]
@@ -1550,17 +1550,17 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 						if( wh_sum[ lint ] > 0 ):
 							wh_sum[ lint ] = wh_sum[ lint ] / ter_sum[ lint ]
 							pos_sum[ lint ] = pos_sum[ lint ] / ter_sum[ lint ]
-							new_x = polygon[ j ][ 0 ] + polygons_new[ lint ] * cos( ( vec_ang[ lint ] + angstep * ( l - lint ) ) * np.pi / 180 ) * step_lon_deg / step_lon_m ; 
-							new_y = polygon[ j ][ 1 ] + polygons_new[ lint ] * sin( ( vec_ang[ lint ] + angstep * ( l - lint ) ) * np.pi / 180 ) * step_lat_deg / step_lat_m ;
+							new_x = polygon[ j ][ 0 ] + pos_sum[ lint ] * cos( ( vec_ang[ lint ] + angstep * ( l - lint ) ) * np.pi / 180 ) * step_lon_deg / step_lon_m ;
+							new_y = polygon[ j ][ 1 ] + pos_sum[ lint ] * sin( ( vec_ang[ lint ] + angstep * ( l - lint ) ) * np.pi / 180 ) * step_lat_deg / step_lat_m ;
 							height_eff = interpol_pos( lon1 , lat1 , step_lon_deg , step_lat_deg , new_x , new_y , cells_lon , cells_lat , Topography )
 							new_volume = polygon[ j ][ 5 ] * ter_sum[ lint ] / sum( vector_correc ) * ( 1 - polygon[ j ][ 6 ] ) / ( 1 - wh_sum[ lint ] )
-							if( not np.isnan( interpol_pos( lon1 , lat1 , step_lon_deg , step_lat_deg , new_x , new_y , cells_lon , cells_lat , Topography ) ) ):
+							if( not np.isnan( interpol_pos( lon1 , lat1 , step_lon_deg , step_lat_deg , new_x , new_y , cells_lon , cells_lat , Topography ) ) and wh_sum[ lint ] * new_volume > 1000 ):
 								polygon.append( ( new_x , new_y , height_eff , polygon[ j ][ 3 ] + 1 , l , new_volume , wh_sum[ lint ] ) )
 
 			sum_pixels = sum( sum( data_step ) )	
 			print( ( j , len( polygon ) , polygon[ j ][ 3 ] , polygon[ j ][ 2 ] , sum( sum( data_step ) ) , polygon[ j ][ 4 ] , polygon[ j ][ 5 ] , polygon[ j ][ 6 ] , Lmax ) )
 			if( save_data == 1 or type_sim == 2 ):
-				if( j == 0 or (j + 1 == len( polygon ) ) ):
+				if( j == 0 or ( j + 1 == len( polygon ) ) ):
 					distances = np.power( np.power( ( matrix_lon - lon_cen_vector[ i ] ) * ( step_lon_m / step_lon_deg ) , 2 ) + np.power( ( matrix_lat - lat_cen_vector[ i ] ) * ( step_lat_m / step_lat_deg ) , 2 ) , 0.5 ) 
 					distances = distances * data_step[ range( len( data_cones[ : , 0 ] ) -1 , -1 , -1 ) , : ]
 					string_data = string_data + "\n" + str( polygon[ j ][ 3 ] ) + " " + str( sum( sum( data_step ) ) * area_pixel ) + " " + str( distances.max() / 1000.0 ) + " " + str( distances.min() / 1000.0 )
@@ -1586,7 +1586,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 						areas_polygons = np.zeros( len( path_new ) )
 						for i_areas in range( len( path_new ) ):
 							areas_polygons[ i_areas ] = PolygonArea( path_new[ i_areas ].vertices )
-						path_new = path_new[ np.argmax( areas_polygons ) ]						
+						path_new = path_new[ np.argmax( areas_polygons ) ]
 					ver_new = path_new.vertices
 					dist_new = np.zeros( len( ver_new ) - 1 )
 					plt.close()
@@ -1600,7 +1600,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 					dist_new_step = np.arange( 0 , dist_new_tot - 1e-5, dist_new_tot / 1000 )
 					cum_new_compare = 0.0 * dist_new
 					for ic in range( len( dist_new ) ):
-						cum_new_compare[ic] = sum( dist_new[ 0 : ic + 1 ] )
+						cum_new_compare[ ic ] = sum( dist_new[ 0 : ic + 1 ] )
 					vertices_new = np.zeros( ( len( dist_new_step ) , 2 ) )
 					for ic in range( len( dist_new_step ) ):
 						for jc in range( len( cum_new_compare ) ):
@@ -1609,24 +1609,24 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 									factor = ( cum_new_compare[ jc ] - dist_new_step[ ic ] ) / cum_new_compare[ jc ]
 								else:
 									factor = ( cum_new_compare[ jc ] - dist_new_step[ ic ] ) / ( cum_new_compare[ jc ] - cum_new_compare[ jc - 1 ] )
-								vertices_new[ ic , 0 ] = ver_new[ jc + 1 ][ 0 ] * ( 1 - factor ) + ver_new[ jc ][ 0 ] * (factor)
-								vertices_new[ ic , 1 ] = ver_new[ jc + 1 ][ 1 ] * ( 1 - factor ) + ver_new[ jc ][ 1 ] * (factor)
+								vertices_new[ ic , 0 ] = ver_new[ jc + 1 ][ 0 ] * ( 1 - factor ) + ver_new[ jc ][ 0 ] * ( factor )
+								vertices_new[ ic , 1 ] = ver_new[ jc + 1 ][ 1 ] * ( 1 - factor ) + ver_new[ jc ][ 1 ] * ( factor )
 								break
 					sum_differences = 0
 					dist_dir1 = np.zeros( ( len( vertices_compare ) , 1 ) )
 					for ic in range( 0 , len( vertices_compare ) ):
 						distance_lines = np.abs( vertices_compare[ ic , : ] - vertices_new )
-						distance_lines = ( distance_lines[ : , 0 ] * step_lon_m / step_lon_deg * distance_lines[ : , 0 ] * step_lon_m / step_lon_deg ) + (distance_lines[ : , 1 ] * step_lat_m / step_lat_deg * distance_lines[ : , 1 ] * step_lat_m / step_lat_deg )
-						dist_dir1[ic] = np.sqrt( np.min( distance_lines ) )
+						distance_lines = ( distance_lines[ : , 0 ] * step_lon_m / step_lon_deg * distance_lines[ : , 0 ] * step_lon_m / step_lon_deg ) + ( distance_lines[ : , 1 ] * step_lat_m / step_lat_deg * distance_lines[ : , 1 ] * step_lat_m / step_lat_deg )
+						dist_dir1[ ic ] = np.sqrt( np.min( distance_lines ) )
 						sum_differences = sum_differences + ( np.min( distance_lines ) ) / ( len( vertices_compare ) + len( vertices_new ) )
 					dist_dir2 = np.zeros( ( len( vertices_new ) , 1 ) )
 					for ic in range( 0 , len( vertices_new ) ):
 						distance_lines = np.abs( vertices_new[ ic , : ] - vertices_compare )
 						distance_lines = ( distance_lines[ : , 0 ] * step_lon_m / step_lon_deg * distance_lines[ : , 0 ] * step_lon_m / step_lon_deg ) + ( distance_lines[ : , 1 ] * step_lat_m / step_lat_deg * distance_lines[ : , 1 ] * step_lat_m / step_lat_deg )
-						dist_dir2[ic] = np.sqrt( np.min( distance_lines ) )
+						dist_dir2[ ic ] = np.sqrt( np.min( distance_lines ) )
 						sum_differences = sum_differences + ( np.min( distance_lines ) ) / ( len( vertices_compare ) + len( vertices_new ) )
 					plt.close()
-					string_compare[ i , : ] = [ volume_vector[ i ] , phi_0_vector[ i ] , ( sum( sum( data_step * matrix_compare ) ) ) / ( sum( sum( np.maximum( data_step , matrix_compare ) ) ) ) , np.sqrt( sum_differences ) , max( max( dist_dir1[ : ] ) , max( dist_dir2[ : ] ) )[ 0 ] , distances.max() , ( sum( sum( data_step * matrix_compare * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) / (sum( sum( np.maximum( data_step , matrix_compare ) * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) , ( distances * data_direction ).max() , sum( sum( data_step ) ) * area_pixel ]
+					string_compare[ i , : ] = [ volume_vector[ i ] , phi_0_vector[ i ] , ( sum( sum( data_step * matrix_compare ) ) ) / ( sum( sum( np.maximum( data_step , matrix_compare ) ) ) ) , np.sqrt( sum_differences ) , max( max( dist_dir1[ : ] ) , max( dist_dir2[ : ] ) )[ 0 ] , distances.max() , ( sum( sum( data_step * matrix_compare * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) / ( sum( sum( np.maximum( data_step , matrix_compare ) * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) , ( distances * data_direction ).max() , sum( sum( data_step ) ) * area_pixel ]
 				else:
 					string_compare[ i , : ] = [ volume_vector[ i ] , phi_0_vector[ i ] , np.nan , np.nan , np.nan , distances.max() , np.nan , ( distances * data_direction ).max() , sum( sum( data_step ) ) * area_pixel ]
 			data_cones = data_cones + data_step
@@ -1660,10 +1660,10 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 		Fr_current = Fr_vector[ i ]
 		rho_p_current = rho_p_vector[ i ]
 		rho_gas_current = rho_gas_vector[ i ]
-		gp_current = g * (rho_p_current - rho_gas_current ) / rho_gas_current
+		gp_current = g * ( rho_p_current - rho_gas_current ) / rho_gas_current
 		for j in range( 10000 ):
 			if( j == len( polygon ) ):
-				if( N == 1 ):			
+				if( N == 1 ):
 					data_cones = data_cones + data_step
 				break
 			if( max_levels < polygon[ j ][ 3 ] ):
@@ -1680,7 +1680,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 			polygon_xy_res3 = []
 			const_c = 0.5 * np.power( ws_current * polygon[ j ][ 6 ] * gp_current * Fr_current * Fr_current , 1.0 / 3.0 )
 			Lmax = np.power( ( 16 * np.sqrt( 2 ) * np.power( const_c , 1.5 ) * np.power( polygon[ j ][ 5 ] / np.pi / ws_current , 1.5 ) ) , 0.25 )
-			const_k = (ws_current / Fr_current) * np.power( gp_current, -0.5 ) * np.power( polygon[ j ][ 5 ] / np.pi , -1.5 )
+			const_k = ( ws_current / Fr_current ) * np.power( gp_current, -0.5 ) * np.power( polygon[ j ][ 5 ] / np.pi , -1.5 )
 			for angle_deg in vec_ang:
 				angle_rad = angle_deg * np.pi / 180
 				h_min = interpol_pos( east_cor , north_cor , cellsize , cellsize , polygon[ j ][ 0 ] , polygon[ j ][ 1 ] , n_east , n_north , Topography )
@@ -1693,21 +1693,21 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 					h = interpol_pos( east_cor , north_cor , cellsize , cellsize , polygon[ j ][ 0 ] + distance * cos( angle_rad ) , polygon[ j ][ 1 ] + distance * sin( angle_rad ) , n_east , n_north , Topography )
 					h_min = min( h , h_min )
 					h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax , 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax , 2.0 ) ) ) , 2.0 ) ) , 2.0 )
-					if( h >= h_min + h_boxmodel ):
+					if( h >= h_min + h_boxmodel or np.isnan( h ) ):
 						polygon_xy.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) - east_cor ) * n_east / ( cellsize * ( n_east - 1 ) ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) - north_cor ) * n_north / ( cellsize * ( n_north - 1 ) ) ) ) )
 						polygons_new.append( distance - distep )
-						break		
+						break
 			if( ( redist_volume == 3 or redist_volume == 4 ) and polygon[ j ][ 4 ] > -1 ):
-				lim = np.int(polygon[ j ][ 4 ] )
+				lim = np.int( polygon[ j ][ 4 ] )
 				if( polygon[ j ][ 4 ] == np.int( polygon[ j ][ 4 ] ) ):
 					for ii in range( int( anglen ) ):
 						vector_correc[ ii ] = vector_backward_1[ int( ( ii - polygon[ j ][ 4 ] + index_max ) % anglen ) ]
 				else:
 					for ii in range( int( anglen ) ):
 						vector_correc[ ii ] = vector_backward_2[ int( ( ii - polygon[ j ][ 4 ] + index_max ) % anglen ) ]
-				polygons_new = polygons_new * vector_correc
 			else:
-				vector_correc = np.ones( int( anglen ) )				
+				vector_correc = np.ones( int( anglen ) )
+			polygons_new = polygons_new * vector_correc
 			if( j == 0 ):
 				runout_min = min( polygons_new )
 			if( max( polygons_new ) > 500 and max( polygons_new ) < 5000 ):
@@ -1717,12 +1717,12 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 					for distance in range( 0 , 100000 , distep ):
 						if( distance > Lmax ):
 							distance = Lmax
-							polygon_xy_res2.append( ( int( ( polygon[ j ][ 0 ] + ( distance ) * cos( angle_rad ) - east_cor ) * n_east / ( cellsize * ( n_east - 1 ) ) ) , int( ( polygon[ j ][ 1 ] + ( distance ) * sin( angle_rad ) - north_cor) * n_north / ( cellsize * ( n_north - 1 ) ) ) ) )
+							polygon_xy_res2.append( ( int( ( polygon[ j ][ 0 ] + ( distance ) * cos( angle_rad ) - east_cor ) * n_east / ( cellsize * ( n_east - 1 ) ) ) , int( ( polygon[ j ][ 1 ] + ( distance ) * sin( angle_rad ) - north_cor ) * n_north / ( cellsize * ( n_north - 1 ) ) ) ) )
 							break
 						h = interpol_pos( east_cor , north_cor , cellsize , cellsize , polygon[ j ][ 0 ] + distance * cos( angle_rad ) , polygon[ j ][ 1 ] + distance * sin( angle_rad ) , n_east , n_north , Topography )
 						h_min = min( h , h_min )
 						h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax , 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax, 2.0 ) ) ) , 2.0 ) ) , 2.0 )
-						if( h >= h_min + h_boxmodel ):
+						if( h >= h_min + h_boxmodel or np.isnan( h ) ):
 							polygon_xy_res2.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) - east_cor ) * n_east / ( cellsize * ( n_east - 1 ) ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) - north_cor ) * n_north / ( cellsize * ( n_north - 1 ) ) ) ) )
 							break
 			elif( max( polygons_new ) >= 5000 ):
@@ -1735,9 +1735,9 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 							polygon_xy_res3.append( ( int( ( polygon[ j ][ 0 ] + ( distance ) * cos( angle_rad ) - east_cor ) * n_east / ( cellsize * ( n_east - 1 ) ) ) , int( ( polygon[ j ][ 1 ] + ( distance ) * sin( angle_rad ) - north_cor ) * n_north / ( cellsize * ( n_north - 1 ) ) ) ) )
 							break
 						h = interpol_pos( east_cor , north_cor , cellsize , cellsize , polygon[ j ][ 0 ] + distance * cos( angle_rad ) , polygon[ j ][ 1 ] + distance * sin( angle_rad ) , n_east , n_north , Topography )
-						h_min = min(h, h_min)
-						h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax , 1.0 / 3.0 ) ) / ( ( distance / Lmax) * np.power( cosh(atanh( np.power( distance / Lmax, 2.0 ) ) ) , 2.0 ) ) , 2.0 )
-						if( h >= h_min + h_boxmodel ):
+						h_min = min( h , h_min )
+						h_boxmodel = ( 1 / ( 2 * g ) ) * np.power( ( const_c * np.power( Lmax , 1.0 / 3.0 ) ) / ( ( distance / Lmax ) * np.power( cosh( atanh( np.power( distance / Lmax, 2.0 ) ) ) , 2.0 ) ) , 2.0 )
+						if( h >= h_min + h_boxmodel or np.isnan( h ) ):
 							polygon_xy_res3.append( ( int( ( polygon[ j ][ 0 ] + ( distance - distep ) * cos( angle_rad ) - east_cor ) * n_east / ( cellsize * ( n_east - 1 ) ) ) , int( ( polygon[ j ][ 1 ] + ( distance - distep ) * sin( angle_rad ) - north_cor ) * n_north / ( cellsize * ( n_north - 1 ) ) ) ) )
 							break
 			img = Image.new( 'L' , ( n_east , n_north ) , 0 )
@@ -1838,16 +1838,16 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 								if( l_index < 0 ):
 									l_index = l_index + len( polygons_new )
 								if( polygons_new[ lmax ] < polygons_new[ l_index ] ):
-									break							
+									break
 								wh_sum[ lmax ] = wh_sum[ lmax ] + np.power( np.sqrt( polygon[ j ][ 6 ] ) - 0.125 * const_k * np.power( polygons_new[ l_index ] , 4.0 ) , 2.0 ) * vector_correc[ l_index ]
 								ter_sum[ lmax ] = ter_sum[ lmax ] + 1.0 * vector_correc[ l_index ]
-								pos_sum[ lmax ] = pos_sum[ lmax ] + polygons_new[ l_index ] * vector_correc[ l_index ] * np.cos( (lmax - l_index ) * angstep * np.pi / 180.0 )
+								pos_sum[ lmax ] = pos_sum[ lmax ] + polygons_new[ l_index ] * vector_correc[ l_index ] * np.cos( ( lmax - l_index ) * angstep * np.pi / 180.0 )
 					elif( redist_volume == 2 or redist_volume == 4 ):
 						wh_max = np.sort( wh_max )
 						wh_min = np.sort( wh_min )
 						if( wh_min[ 0 ] > wh_max[ 0 ] ):
 							for l_ind in range( len( wh_max ) ):
-								l_max_real = wh_max[ l_ind ]	
+								l_max_real = wh_max[ l_ind ]
 								l_max_int = np.int( l_max_real )
 								step_right = wh_min[ l_ind ] - l_max_int
 								l_right_real = wh_min[ l_ind ]
@@ -1946,7 +1946,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 							new_y = polygon[ j ][ 1 ] + pos_sum[ lint ] * sin( ( vec_ang[ lint ] + angstep * ( l - lint ) ) * np.pi / 180 ) ;
 							height_eff = interpol_pos( east_cor , north_cor , cellsize , cellsize , new_x , new_y , n_east , n_north , Topography )
 							new_volume = polygon[ j ][ 5 ] * ter_sum[ lint ] / sum( vector_correc ) * ( 1 - polygon[ j ][ 6 ] ) / ( 1 - wh_sum[ lint ] )
-							if( not np.isnan( interpol_pos( east_cor , north_cor , cellsize , cellsize , new_x , new_y , n_east , n_north , Topography ) ) ):
+							if( not np.isnan( interpol_pos( east_cor , north_cor , cellsize , cellsize , new_x , new_y , n_east , n_north , Topography ) ) and wh_sum[ lint ] * new_volume > 1000 ):
 								polygon.append( ( new_x , new_y , height_eff , polygon[ j ][ 3 ] + 1 , l , new_volume, wh_sum[lint] ) )
 			sum_pixels = sum( sum( data_step ) )
 			print( ( j , len( polygon ) , polygon[ j ][ 3 ] , polygon[ j ][ 2 ] , sum( sum( data_step ) ) , polygon[ j ][ 4 ] , polygon[ j ][ 5 ] , polygon[ j ][ 6 ] , Lmax ) )
@@ -1954,7 +1954,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 				if( j == 0 or ( j + 1 == len( polygon ) ) ):
 					distances = np.power( np.power( ( matrix_east - east_cen_vector[ i ] ) , 2 ) + np.power( ( matrix_north - north_cen_vector[ i ] ) , 2 ) ,0.5 ) 
 					distances = distances * data_step[ range( len( data_cones[ : , 0 ] ) -1 , -1 , -1 ) , : ]
-					string_data = string_data + "\n" + str(polygon[ j ][ 3 ] ) + " " + str( sum( sum( data_step ) )* area_pixel ) + " " + str(distances.max() / 1000.0 ) + " " + str( distances.min() / 1000.0 )
+					string_data = string_data + "\n" + str( polygon[ j ][ 3 ] ) + " " + str( sum( sum( data_step ) )* area_pixel ) + " " + str( distances.max() / 1000.0 ) + " " + str( distances.min() / 1000.0 )
 				elif( polygon[ j ][ 3 ] < polygon[ j + 1 ][ 3 ] ):
 					distances = np.power( np.power( ( matrix_east - east_cen_vector[ i ] ) , 2 ) + np.power( ( matrix_north - north_cen_vector[ i ] ) ,2 ) , 0.5 ) 
 					distances = distances * data_step[ range( len( data_cones[ : , 0 ] ) -1 , -1 , -1 ) , : ]
@@ -1983,11 +1983,11 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 					plt.close()
 					for ic in range( len( ver_new ) - 1 ):
 						dist_new[ ic ] = np.sqrt( ( ver_new[ ic + 1 , 1 ] - ver_new[ ic , 1 ] ) ** 2 + ( ver_new[ ic + 1 , 0 ] - ver_new[ ic , 0 ] ) ** 2 )
-					dist_new_tot = sum(dist_new)
+					dist_new_tot = sum( dist_new )
 					dist_new_step = np.arange( 0 , dist_new_tot - 1e-5 , dist_new_tot / 1000 )
 					cum_new_compare = 0.0 * dist_new
 					for ic in range( len( dist_new ) ):
-						cum_new_compare[ic] = sum( dist_new[ 0 : ic + 1 ] )
+						cum_new_compare[ ic ] = sum( dist_new[ 0 : ic + 1 ] )
 					vertices_new = np.zeros( ( len( dist_new_step ) , 2 ) )
 					for ic in range( len( dist_new_step ) ):
 						for jc in range( len( cum_new_compare ) ):
@@ -2003,17 +2003,17 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 					dist_dir1 = np.zeros( ( len( vertices_compare ) , 1 ) )
 					for ic in range( 0 , len( vertices_compare ) ):
 						distance_lines = np.abs( vertices_compare[ ic , : ] - vertices_new )
-						distance_lines = ( distance_lines[ : , 0 ] * distance_lines[ : , 0 ] ) + (distance_lines[ : , 1 ] * distance_lines[ : , 1 ] )
+						distance_lines = ( distance_lines[ : , 0 ] * distance_lines[ : , 0 ] ) + ( distance_lines[ : , 1 ] * distance_lines[ : , 1 ] )
 						dist_dir1[ ic ] = np.sqrt( np.min( distance_lines ) )
 						sum_differences = sum_differences + ( np.min( distance_lines ) ) / ( len( vertices_compare ) + len( vertices_new ) )
 					dist_dir2 = np.zeros( ( len( vertices_new ) , 1 ) )
 					for ic in range( 0 , len( vertices_new ) ):
 						distance_lines = np.abs( vertices_new[ ic , : ] - vertices_compare )
 						distance_lines = ( distance_lines[ : , 0 ] * distance_lines[ : , 0 ] ) + ( distance_lines[ : , 1 ] * distance_lines[ : , 1 ] )
-						dist_dir2[ic] = np.sqrt( np.min( distance_lines ) )
+						dist_dir2[ ic ] = np.sqrt( np.min( distance_lines ) )
 						sum_differences = sum_differences + ( np.min( distance_lines ) ) / ( len( vertices_compare ) + len( vertices_new ) )
 					plt.close()
-					string_compare[ i , : ] = [ volume_vector[ i ] , phi_0_vector[ i ] , ( sum( sum( data_step * matrix_compare ) ) ) / ( sum( sum( np.maximum( data_step , matrix_compare ) ) ) ) , np.sqrt( sum_differences ) , max( max( dist_dir1[ : ] ) , max( dist_dir2[ : ] ) )[ 0 ] , distances.max() , ( sum( sum( data_step * matrix_compare * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) / (sum(sum( np.maximum( data_step, matrix_compare ) * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) , ( distances * data_direction ).max() , sum( sum( data_step ) ) * area_pixel ]
+					string_compare[ i , : ] = [ volume_vector[ i ] , phi_0_vector[ i ] , ( sum( sum( data_step * matrix_compare ) ) ) / ( sum( sum( np.maximum( data_step , matrix_compare ) ) ) ) , np.sqrt( sum_differences ) , max( max( dist_dir1[ : ] ) , max( dist_dir2[ : ] ) )[ 0 ] , distances.max() , ( sum( sum( data_step * matrix_compare * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) / ( sum( sum( np.maximum( data_step, matrix_compare ) * data_direction[ range( len( data_direction[ : , 0 ] ) -1 , -1 , -1 ) , : ] ) ) ) , ( distances * data_direction ).max() , sum( sum( data_step ) ) * area_pixel ]
 				else:
 					string_compare[ i , : ] = [ volume_vector[ i ] , phi_0_vector[ i ] , np.nan , np.nan , np.nan , distances.max() , np.nan , ( distances * data_direction ).max() , sum( sum( data_step ) ) * area_pixel ]
 			data_cones = data_cones + data_step
@@ -2069,7 +2069,7 @@ def save_data_deg( run_name , source_dem , sea_flag , lon1 , lon2 , lat1 , lat2 
 		text_file.close()
 		np.savetxt( 'Results/' + run_name + '/' + 'matrix_lon.txt' , matrix_lon , fmt = '%.5e' )
 		np.savetxt( 'Results/' + run_name + '/' + 'matrix_lat.txt' , matrix_lat , fmt = '%.5e' )
-	if( source_dem == 1 ):		
+	if( source_dem == 1 ):
 		text_file = open( 'Results/' + run_name + '/Topography_3.txt' , 'w' )
 		text_file.write( 'lon1 ' + str( lon1 ) + '\n' )
 		text_file.write( 'lon2 ' + str( lon2 ) + '\n' )
@@ -2096,7 +2096,7 @@ def save_data_utm( run_name , sea_flag , n_north , n_east , cellsize , matrix_ea
 	for i in range( n_north - 1 , -1 , -1 ):
 		text_file.write( '\n' )
 		for j in range( 0 , n_east ):
-			text_file.write( ' ' + str( data_cones_save[i,j] ) )
+			text_file.write( ' ' + str( data_cones_save[ i , j ] ) )
 	text_file.close()
 	np.savetxt( 'Results/' + run_name + '/' + 'summary.txt', summary_data , fmt = '%.5e' )
 	if( save_type == 1 ):
@@ -2113,7 +2113,7 @@ def save_data_utm( run_name , sea_flag , n_north , n_east , cellsize , matrix_ea
 			text_file.close()
 		text_file = open( 'Results/' + run_name + '/' + 'sim_data.txt', 'w' )
 		text_file.write( sim_data )
-		text_file.close()	
+		text_file.close()
 		np.savetxt( 'Results/' + run_name + '/' + 'matrix_east.txt' , matrix_east , fmt = '%.5e' )
 		np.savetxt( 'Results/' + run_name + '/' + 'matrix_north.txt' , matrix_north , fmt = '%.5e' )
  
@@ -2125,14 +2125,14 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 	val_up = np.floor( ( line_val + 0.1 - 1.0 / N ) * 10.0 ) / 20.0
 	val_down = np.maximum( val_up / 10.0 , 0.05 )
 	plt.figure( 1 , figsize = ( 8.0 , 5.0 ) )
-	plt.axes().set_aspect( step_lat_m / step_lon_m )	
+	plt.axes().set_aspect( step_lat_m / step_lon_m )
 	cmapg = plt.cm.get_cmap( 'Greys' )
 	cmapr = plt.cm.get_cmap( 'Reds' )
 	cmaps = plt.cm.get_cmap( 'Blues' ) 
 	if( N > 1 ):
 		CS_Topo = plt.contourf( matrix_lon , matrix_lat , Topography , 100 , alpha = 1.0 , cmap = cmapg , antialiased = True )
 		CS_Sea = plt.contourf( matrix_lon , matrix_lat , Topography_Sea , 100 , alpha = 0.5 , cmap = cmaps , antialiased = True )
-		CS = plt.contourf( matrix_lon , matrix_lat , data_cones , 100 , vmin = 0.0 , vmax = 1.0 , alpha = 0.3 , interpolation = 'linear' , cmap = cmapr , antialiased = True )	
+		CS = plt.contourf( matrix_lon , matrix_lat , data_cones , 100 , vmin = 0.0 , vmax = 1.0 , alpha = 0.3 , interpolation = 'linear' , cmap = cmapr , antialiased = True )
 		fmt = '%.2f'
 		plt.colorbar()
 		CS_lines = plt.contour( matrix_lon , matrix_lat , data_cones, np.array( [ val_down, val_up ] ) , colors = 'r' , interpolation = 'linear' , linewidths = 0.1 )
@@ -2251,7 +2251,7 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 		plt.savefig( 'Results/' + run_name + '/Calibration_Area.png' )
 		if( not comparison_polygon == '' ):
 			Jaccard_vals = calibration_data[ : , 2 ]
-			Jaccard_vals_reshaped = Jaccard_vals.reshape(int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
+			Jaccard_vals_reshaped = Jaccard_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 			MSD_vals = calibration_data[ : , 3 ]
 			MSD_vals_reshaped = MSD_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 			HD_vals = calibration_data[ : , 4 ]
@@ -2263,7 +2263,7 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 				for j in range( leny ):
 					Jaccard_mat[ i , j ] = Jaccard_vals_reshaped[ i , j ]
 			plt.figure( 5 , figsize = ( 8.0 , 5.0 ) )
-			c1 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_mat )
+			c1 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_mat , cmap = 'viridis' )
 			plt.colorbar( c1 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2276,7 +2276,7 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 				for j in range( leny ):
 					MSD_mat[ i , j ] = MSD_vals_reshaped[ i , j ]
 			plt.figure( 6 , figsize = ( 8.0 , 5.0 ) )
-			c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat )
+			c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat , cmap = 'viridis_r' )
 			plt.colorbar( c2 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2289,7 +2289,7 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 				for j in range( leny ):
 					HD_mat[ i , j ] = HD_vals_reshaped[ i , j ]
 			plt.figure( 7 , figsize = ( 8.0 , 5.0 ) )
-			c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat )
+			c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat , cmap = 'viridis_r' )
 			plt.colorbar( c3 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2302,7 +2302,7 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 				for j in range( leny ):
 					Jaccard_dir_mat[ i , j ] = Jaccard_dir_vals_reshaped[ i , j ]
 			plt.figure( 8 , figsize = ( 8.0 , 5.0 ) )
-			c5 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_dir_mat )
+			c5 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_dir_mat , cmap = 'viridis' )
 			plt.colorbar( c5 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2445,7 +2445,7 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 		plt.savefig( 'Results/' + run_name + '/Calibration_Area.png' )
 		if( not comparison_polygon == '' ):
 			Jaccard_vals = calibration_data[ : , 2 ]
-			Jaccard_vals_reshaped = Jaccard_vals.reshape(int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
+			Jaccard_vals_reshaped = Jaccard_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 			MSD_vals = calibration_data[ : , 3 ]
 			MSD_vals_reshaped = MSD_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 			HD_vals = calibration_data[ : , 4 ]
@@ -2470,7 +2470,7 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 				for j in range( leny ):
 					MSD_mat[ i , j ] = MSD_vals_reshaped[ i , j ]
 			plt.figure( 6 , figsize = ( 8.0 , 5.0 ) )
-			c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat )
+			c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat , cmap = 'viridis_r' )
 			plt.colorbar( c2 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2483,7 +2483,7 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 				for j in range( leny ):
 					HD_mat[ i , j ] = HD_vals_reshaped[ i , j ]
 			plt.figure( 7 , figsize = ( 8.0 , 5.0 ) )
-			c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat )
+			c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat , cmap = 'viridis_r' )
 			plt.colorbar( c3 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2496,7 +2496,7 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 				for j in range( leny ):
 					Jaccard_dir_mat[ i , j ] = Jaccard_dir_vals_reshaped[ i , j ]
 			plt.figure( 8 , figsize = ( 8.0 , 5.0 ) )
-			c5 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_dir_mat )
+			c5 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_dir_mat , cmap = 'viridis' )
 			plt.colorbar( c5 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2581,8 +2581,8 @@ def plot_only_topography_deg( Cities , lon1 , lon2 , lat1 , lat2 , step_lat_m , 
 	CS_Topo = plt.contourf( matrix_lon , matrix_lat , Topography , 100 , alpha = 1.0 , cmap = cmapg , antialiased = True )
 	CS_Sea = plt.contourf( matrix_lon , matrix_lat , Topography_Sea , 100 , alpha = 0.5 , cmap = cmaps , antialiased = True )
 
-	plt.xlabel('Longitude $[^\circ]$')
-	plt.ylabel('Latitude $[^\circ]$')
+	plt.xlabel( 'Longitude $[^\circ]$' )
+	plt.ylabel( 'Latitude $[^\circ]$' )
 	plt.xlim( lon1, lon2 )
 	plt.ylim( lat1, lat2 )
 	for i in range( len( Cities ) ):
@@ -2665,7 +2665,7 @@ def plot_only_properties( volume_vector , phi_0_vector , ws_vector , Fr_vector ,
 			plt.xlabel( 'Inundation area [km2]' )
 			plt.ylabel( 'Sampling probability' )
 			plt.ylim( bottom = 0 )
-			plt.xlim( left = 0 )		
+			plt.xlim( left = 0 )
 			plt.grid()
 
 def plot_only_comparison_polygon_deg( matrix_lon , matrix_lat , matrix_compare ):
@@ -2691,7 +2691,7 @@ def plot_only_map_deg( Cities , lon1 , lon2 , lat1 , lat2 , step_lat_m , step_lo
 	if( N > 1 ):
 		CS_Topo = plt.contourf( matrix_lon , matrix_lat , Topography , 1000 , alpha = 1.0 , cmap = cmapg , antialiased = True )
 		CS_Sea = plt.contourf( matrix_lon , matrix_lat , Topography_Sea , 100 , alpha = 0.5 , cmap = cmaps , antialiased = True )
-		CS = plt.contourf( matrix_lon , matrix_lat , data_cones , 100 , vmin = 0.0 , vmax = 1.0 , alpha = 0.3 , interpolation = 'linear' , cmap = cmapr , antialiased = True )	
+		CS = plt.contourf( matrix_lon , matrix_lat , data_cones , 100 , vmin = 0.0 , vmax = 1.0 , alpha = 0.3 , interpolation = 'linear' , cmap = cmapr , antialiased = True )
 		fmt = '%.2f'
 		plt.colorbar()
 		CS_lines = plt.contour( matrix_lon , matrix_lat , data_cones , np.array( [ val_down , val_up ] ) , colors = 'r' , interpolation = 'linear' , linewidths = 1 )
@@ -2724,7 +2724,7 @@ def plot_only_map_utm( matrix_east , matrix_north , east_cor , north_cor , n_eas
 	if( N > 1 ):
 		CS_Topo = plt.contourf( matrix_east , matrix_north , Topography , 100 , alpha = 1.0 , cmap = cmapg , antialiased = True )
 		CS_Sea = plt.contourf( matrix_east , matrix_north , Topography_Sea , 100 , alpha = 0.5 , cmap = cmaps , antialiased = True )
-		CS = plt.contourf( matrix_east , matrix_north , data_cones , 100, vmin = 0.0 , vmax = 1.0 , alpha = 0.3 , interpolation = 'linear' , cmap = cmapr , antialiased = True )	
+		CS = plt.contourf( matrix_east , matrix_north , data_cones , 100, vmin = 0.0 , vmax = 1.0 , alpha = 0.3 , interpolation = 'linear' , cmap = cmapr , antialiased = True )
 		fmt = '%.2f'
 		plt.colorbar()
 		CS_lines = plt.contour( matrix_east , matrix_north , data_cones , np.array( [ val_down , val_up ] ) , colors = 'r' , interpolation = 'linear' , linewidths = 1 )
@@ -2831,16 +2831,16 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 		for j in range( 1 , leny ):
 			volume_mat[ i , j ] = volume_vals_reshaped[ i , j ] * 0.5 + volume_vals_reshaped[ i , j - 1 ] * 0.5 
 	volume_mat[ lenx , : ] = volume_mat[ lenx - 1 , : ]
-	phi0_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
+	phi_0_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
 	for j in range( leny ):
-		phi0_mat[ 0 , j ] = phi0_vals_reshaped[ 0 , j ]
-		phi0_mat[ lenx , j ] = phi0_vals_reshaped[ lenx - 1 , j ]
+		phi_0_mat[ 0 , j ] = phi0_vals_reshaped[ 0 , j ]
+		phi_0_mat[ lenx , j ] = phi0_vals_reshaped[ lenx - 1 , j ]
 	for i in range( 1 , lenx ):
 		for j in range( 0 , leny ):
-			phi0_mat[ i , j ] = phi0_vals_reshaped[ i , j ] * 0.5 + phi0_vals_reshaped[ i - 1 , j - 1 ] * 0.5 
+			phi_0_mat[ i , j ] = phi0_vals_reshaped[ i , j ] * 0.5 + phi0_vals_reshaped[ i - 1 , j - 1 ] * 0.5
 	for j in range( lenx + 1 ):
-		phi0_mat[ j , leny ] = - phi0_mat[ j , leny - 2 ] + 2 * phi0_mat[ j , leny - 1 ]
-	phi0_mat[ : , leny ] = phi0_mat[ : , leny - 1 ]
+		phi_0_mat[ j , leny ] = - phi_0_mat[ j , leny - 2 ] + 2 * phi_0_mat[ j , leny - 1 ]
+	phi_0_mat[ : , leny ] = phi_0_mat[ : , leny - 1 ]
 	dist_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
 	for i in range( lenx ):
 		for j in range( leny ):
@@ -2850,7 +2850,7 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 		for j in range( leny ):
 			area_mat[ i , j ] = area_vals_reshaped[ i , j ]
 	plt.figure( 4 , figsize = ( 8.0 , 5.0 ) )
-	c4 = plt.pcolormesh( volume_mat , phi0_mat , dist_mat , cmap = 'viridis' )
+	c4 = plt.pcolormesh( volume_mat , phi_0_mat , dist_mat , cmap = 'viridis' )
 	plt.colorbar( c4 )
 	plt.xlabel( 'log( Collapsing volume [m3] )' )
 	plt.ylabel( 'Initial concentration' )
@@ -2858,7 +2858,7 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 	plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 	plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 	plt.figure( 5 , figsize = ( 8.0 , 5.0 ) )
-	c7 = plt.pcolormesh( volume_mat , phi0_mat , area_mat , cmap = 'viridis' )
+	c7 = plt.pcolormesh( volume_mat , phi_0_mat , area_mat , cmap = 'viridis' )
 	plt.colorbar( c7 )
 	plt.xlabel( 'log( Collapsing volume [m3] )' )
 	plt.ylabel( 'Initial concentration' )
@@ -2877,7 +2877,7 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 			for j in range( leny ):
 				Jaccard_mat[ i , j ] = Jaccard_vals_reshaped[ i , j ]
 		plt.figure( 6 , figsize = ( 8.0 , 5.0 ) )
-		c1 = plt.pcolormesh( volume_mat , phi0_mat , Jaccard_mat , cmap = 'viridis' )
+		c1 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_mat , cmap = 'viridis' )
 		plt.colorbar( c1 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2889,7 +2889,7 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 			for j in range( leny ):
 				MSD_mat[ i , j ] = MSD_vals_reshaped[ i , j ]
 		plt.figure( 7 , figsize = ( 8.0 , 5.0 ) )
-		c2 = plt.pcolormesh( volume_mat , phi0_mat , MSD_mat , cmap = 'viridis_r' )
+		c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat , cmap = 'viridis_r' )
 		plt.colorbar( c2 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2901,7 +2901,7 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 			for j in range( leny ):
 				HD_mat[ i , j ] = HD_vals_reshaped[ i , j ]
 		plt.figure( 8 , figsize = ( 8.0 , 5.0 ) )
-		c3 = plt.pcolormesh( volume_mat , phi0_mat , HD_mat , cmap = 'viridis_r' )
+		c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat , cmap = 'viridis_r' )
 		plt.colorbar( c3 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )

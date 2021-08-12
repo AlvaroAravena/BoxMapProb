@@ -38,7 +38,7 @@ def main_program():
 		[ matrix_north , matrix_east , utm_save ] = matrix_utm( n_north , n_east , cellsize , east_cor , north_cor )
 		resolution_factor = cellsize
 
-	# CREATE VECTORS OF H/L AND HEIGHT
+	# CREATE VECTORS OF INPUT PARAMETERS
 	print('Creating input vectors')
 	[ volume_vector , phi_0_vector , ws_vector , Fr_vector , rho_p_vector , rho_gas_vector , N , variable_vector , limits_calib , Probability_Save ] = create_inputs( type_sim , type_input , dist_input_volume , dist_input_phi_0 , dist_input_ws , dist_input_Fr , dist_input_rho_p , dist_input_rho_gas , input_file_cal , volume , var_volume , volume_k , volume_theta , phi_0 , var_phi_0 , phi_0_k , phi_0_theta , ws , var_ws , ws_k , ws_theta , Fr , var_Fr , Fr_k , Fr_theta , rho_p , var_rho_p , rho_p_k , rho_p_theta , rho_gas , var_rho_gas , rho_gas_k , rho_gas_theta , calibration_type , dist_distance_calibration , distance_calibration , var_distance_calibration , distance_calibration_k , distance_calibration_theta , file_cumulative_distance , dist_area_calibration , area_calibration , var_area_calibration , area_calibration_k , area_calibration_theta , file_cumulative_area , N , 0 )
 
@@ -58,13 +58,15 @@ def main_program():
 	else:
 		[ matrix_compare , vertices_compare , string_compare , data_direction ] = [ np.nan , np.nan , np.nan , np.nan ]
 
-	# ENERGY CONES
+	# CONOIDS
 	[ angstep , distep , anglen , pix_min , angstep_res2 , angstep_res3 , anglen_res2 , anglen_res3 , vector_correc , vector_backward_1 , vector_backward_2 , index_max] = initial_definitions( redist_volume )
 	if( save_data == 1 or type_sim == 2 ):
 		if( source_dem == 1 or source_dem == 3 ):
 			[ summary_data , area_pixel , sim_data , string_data , string_cones ] = definitions_save_data_deg( source_dem , volume_vector , phi_0_vector , ws_vector , Fr_vector , rho_p_vector , rho_gas_vector , lon_cen_vector , lat_cen_vector , step_lon_m , step_lat_m , N , max_levels )
 		else:
 			[ summary_data , area_pixel , sim_data , string_data , string_cones ] = definitions_save_data_utm( source_dem , volume_vector , phi_0_vector , ws_vector , Fr_vector , rho_p_vector , rho_gas_vector , east_cen_vector , north_cen_vector , cellsize , N , max_levels )
+	else:
+		[ summary_data , area_pixel , sim_data , string_data , string_cones ] = [ np.nan , np.nan , np.nan , np.nan , np.nan ]
 
 	if( source_dem == 1 or source_dem == 3 ):
 		[ summary_data , string_data , string_cones , string_compare , sim_data , data_cones , polygon ] = compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg , step_lat_deg , step_lon_m , step_lat_m , lon_cen_vector , lat_cen_vector , matrix_lon , matrix_lat , volume_vector , phi_0_vector , ws_vector , Fr_vector , rho_p_vector , rho_gas_vector , g , cells_lon , cells_lat , Topography , angstep , angstep_res2 , angstep_res3 , distep , area_pixel , max_levels , N , redist_volume , save_data , summary_data , string_data , string_cones , sim_data , anglen , pix_min , vector_backward_1 , vector_backward_2 , index_max , vector_correc , matrix_compare , vertices_compare , string_compare , data_direction , comparison_polygon )
