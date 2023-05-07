@@ -1306,8 +1306,8 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 						polygons_new.append( distance - distep )
 						break
 			if( ( redist_volume == 3 or redist_volume == 4 ) and polygon[ j ][ 4 ] > -1 ):
-				lim = np.int( polygon[ j ][ 4 ] )
-				if( polygon[ j ][ 4 ] == np.int( polygon[ j ][ 4 ] ) ):
+				lim = int( polygon[ j ][ 4 ] )
+				if( polygon[ j ][ 4 ] == int( polygon[ j ][ 4 ] ) ):
 					for ii in range( int( anglen ) ):
 						vector_correc[ ii ] = vector_backward_1[ int( ( ii - polygon[ j ][ 4 ] + index_max ) % anglen ) ]
 				else:
@@ -1429,7 +1429,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 				if( len( wh_max ) > 0 ):
 					if( redist_volume == 1 or redist_volume == 3 or len( wh_max ) == 1 ):
 						for l_max_real in wh_max:
-							lmax = np.int( l_max_real )
+							lmax = int( l_max_real )
 							l_it = len( polygons_new ) - 1
 							for l in range( 1 , len( polygons_new ) ):
 								l_index = lmax + l
@@ -1456,10 +1456,10 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 						if( wh_min[ 0 ] > wh_max[ 0 ] ):
 							for l_ind in range( len( wh_max ) ):
 								l_max_real = wh_max[ l_ind ]
-								l_max_int = np.int( l_max_real )
+								l_max_int = int( l_max_real )
 								step_right = wh_min[ l_ind ] - l_max_int
 								l_right_real = wh_min[ l_ind ]
-								l_right_int = np.int( l_right_real )
+								l_right_int = int( l_right_real )
 								if( l_ind == 0 ):
 									step_left = anglen + l_max_int - wh_min[ len( wh_min ) - 1 ]
 									l_left_real = wh_min[ len( wh_min ) - 1 ]
@@ -1468,7 +1468,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 									step_left = l_max_int - wh_min[ l_ind - 1 ]
 									l_left_real = wh_min[ l_ind - 1 ]
 									left_index = l_ind - 1
-								l_left_int = np.int( l_left_real )
+								l_left_int = int( l_left_real )
 								for l in range( 1 , int( step_right ) ):
 									l_index = l_max_int + l
 									if( l_index >= len( polygons_new ) ):
@@ -1502,10 +1502,10 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 						else:
 							for l_ind in range( len( wh_max ) ):
 								l_max_real = wh_max[ l_ind ]
-								l_max_int = np.int( l_max_real )
+								l_max_int = int( l_max_real )
 								step_left = l_max_int - wh_min[ l_ind ]
 								l_left_real = wh_min[ l_ind ]
-								l_left_int = np.int( l_left_real )
+								l_left_int = int( l_left_real )
 								if( l_ind == len( wh_max ) - 1 ):
 									step_right = anglen - l_max_int + wh_min[ 0 ]
 									l_right_real = wh_min[ 0 ]
@@ -1514,7 +1514,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 									step_right = wh_min[ l_ind + 1 ] - l_max_int
 									l_right_real = wh_min[ l_ind + 1 ]
 									right_index = l_ind + 1
-								l_right_int = np.int( l_right_real )
+								l_right_int = int( l_right_real )
 								for l in range( 1 , int( step_right ) ):
 									l_index = l_max_int + l
 									if( l_index >= len( polygons_new ) ):
@@ -1546,7 +1546,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 									ter_sum[ l_max_int ] = ter_sum[ l_max_int ] + 1.0 * vector_correc[ l_left_int ]
 									pos_sum[ l_max_int ] = pos_sum[ l_max_int ] + polygons_new[ l_left_int ] * vector_correc[ l_left_int ]
 					for l in wh_max:
-						lint = np.int( l )
+						lint = int( l )
 						if( wh_sum[ lint ] > 0 ):
 							wh_sum[ lint ] = wh_sum[ lint ] / ter_sum[ lint ]
 							pos_sum[ lint ] = pos_sum[ lint ] / ter_sum[ lint ]
@@ -1698,8 +1698,8 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 						polygons_new.append( distance - distep )
 						break
 			if( ( redist_volume == 3 or redist_volume == 4 ) and polygon[ j ][ 4 ] > -1 ):
-				lim = np.int( polygon[ j ][ 4 ] )
-				if( polygon[ j ][ 4 ] == np.int( polygon[ j ][ 4 ] ) ):
+				lim = int( polygon[ j ][ 4 ] )
+				if( polygon[ j ][ 4 ] == int( polygon[ j ][ 4 ] ) ):
 					for ii in range( int( anglen ) ):
 						vector_correc[ ii ] = vector_backward_1[ int( ( ii - polygon[ j ][ 4 ] + index_max ) % anglen ) ]
 				else:
@@ -1821,7 +1821,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 				if( len( wh_max ) > 0 ):
 					if( redist_volume == 1 or redist_volume == 3 or len( wh_max ) == 1 ):
 						for l_max_real in wh_max:
-							lmax = np.int( l_max_real )
+							lmax = int( l_max_real )
 							l_it = len( polygons_new ) - 1
 							for l in range( 1 , len( polygons_new ) ):
 								l_index = lmax + l
@@ -1848,10 +1848,10 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 						if( wh_min[ 0 ] > wh_max[ 0 ] ):
 							for l_ind in range( len( wh_max ) ):
 								l_max_real = wh_max[ l_ind ]
-								l_max_int = np.int( l_max_real )
+								l_max_int = int( l_max_real )
 								step_right = wh_min[ l_ind ] - l_max_int
 								l_right_real = wh_min[ l_ind ]
-								l_right_int = np.int( l_right_real )
+								l_right_int = int( l_right_real )
 								if( l_ind == 0 ):
 									step_left = anglen + l_max_int - wh_min[ len( wh_min ) - 1 ]
 									l_left_real = wh_min[ len( wh_min ) - 1 ]
@@ -1860,7 +1860,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 									step_left = l_max_int - wh_min[ l_ind - 1 ]
 									l_left_real = wh_min[ l_ind - 1 ]
 									left_index = l_ind - 1
-								l_left_int = np.int( l_left_real )
+								l_left_int = int( l_left_real )
 								for l in range( 1 , int( step_right ) ):
 									l_index = l_max_int + l
 									if( l_index >= len( polygons_new ) ):
@@ -1894,10 +1894,10 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 						else:
 							for l_ind in range( len( wh_max ) ):
 								l_max_real = wh_max[ l_ind ]
-								l_max_int = np.int( l_max_real )
+								l_max_int = int( l_max_real )
 								step_left = l_max_int - wh_min[ l_ind ]
 								l_left_real = wh_min[ l_ind ]
-								l_left_int = np.int( l_left_real )
+								l_left_int = int( l_left_real )
 								if( l_ind == len( wh_max ) - 1 ):
 									step_right = anglen - l_max_int + wh_min[ 0 ]
 									l_right_real = wh_min[ 0 ]
@@ -1906,7 +1906,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 									step_right = wh_min[ l_ind + 1 ] - l_max_int
 									l_right_real = wh_min[ l_ind + 1 ]
 									right_index = l_ind + 1
-								l_right_int = np.int( l_right_real )
+								l_right_int = int( l_right_real )
 								for l in range( 1 , int( step_right ) ):
 									l_index = l_max_int + l
 									if( l_index >= len( polygons_new ) ):
@@ -1938,7 +1938,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 									ter_sum[ l_max_int ] = ter_sum[ l_max_int ] + 1.0 * vector_correc[ l_left_int ]
 									pos_sum[ l_max_int ] = pos_sum[ l_max_int ] + polygons_new[ l_left_int ] * vector_correc[ l_left_int ] * np.cos( ( l_max_int - l_left_int ) * angstep * np.pi / 180.0 )
 					for l in wh_max:
-						lint = np.int( l )
+						lint = int( l )
 						if( wh_sum[ lint ] > 0 ):
 							wh_sum[ lint ] = wh_sum[ lint ] / ter_sum[ lint ]
 							pos_sum[ lint ] = pos_sum[ lint ] / ter_sum[ lint ]
@@ -2033,9 +2033,9 @@ def save_data_deg( run_name , source_dem , sea_flag , lon1 , lon2 , lat1 , lat2 
 	cellsize = max( step_lon_m , step_lat_m )
 	if( cellsize == step_lon_m ):
 		output_cells_lon = cells_lon - 1
-		output_cells_lat = np.int( cells_lat * step_lat_m / step_lon_m )
+		output_cells_lat = int( cells_lat * step_lat_m / step_lon_m )
 	else:
-		output_cells_lon = np.int( cells_lon * step_lon_m / step_lat_m )
+		output_cells_lon = int( cells_lon * step_lon_m / step_lat_m )
 		output_cells_lat = cells_lat - 1
 	text_file = open( 'Results/' + run_name + '/' + 'output_map.asc' , 'w' )
 	text_file.write( 'ncols' + ' ' + str( output_cells_lon ) + '\n' )
