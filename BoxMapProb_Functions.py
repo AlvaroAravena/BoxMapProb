@@ -2190,40 +2190,8 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 		dist_dir_vals_reshaped = dist_dir_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 		area_vals = calibration_data[ : , 8 ]
 		area_vals_reshaped = area_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
-		lenx = len( volume_vals_reshaped[ : , 1 ] )
-		leny = len( volume_vals_reshaped[ 1 , : ] )
-		volume_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			volume_mat[ i , 0 ] = volume_vals_reshaped[ i , 0 ]
-			volume_mat[ i , leny ] = volume_vals_reshaped[ i , leny - 1 ]
-		for i in range( 0 , lenx ):
-			for j in range( 1 , leny ):
-				volume_mat[ i , j ] = volume_vals_reshaped[ i , j ] * 0.5 + volume_vals_reshaped[ i , j - 1 ] * 0.5 
-		volume_mat[ lenx , : ] = volume_mat[ lenx - 1 , : ]
-		phi_0_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for j in range( leny ):
-			phi_0_mat[ 0 , j ] = phi_0_vals_reshaped[ 0 , j ]
-			phi_0_mat[ lenx , j ] = phi_0_vals_reshaped[ lenx - 1 , j ]
-		for i in range( 1 , lenx ):
-			for j in range( 0 , leny ):
-				phi_0_mat[ i , j ] = phi_0_vals_reshaped[ i , j ] * 0.5 + phi_0_vals_reshaped[ i - 1 , j - 1 ] * 0.5 
-		for j in range( lenx + 1 ):
-			phi_0_mat[ j , leny ] = - phi_0_mat[ j , leny - 2 ] + 2 * phi_0_mat[ j , leny - 1 ]
-		phi_0_mat[ : , leny ] = phi_0_mat[ : , leny - 1 ]
-		dist_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				dist_mat[ i , j ] = dist_vals_reshaped[ i , j ]
-		dist_dir_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				dist_dir_mat[ i , j ] = dist_dir_vals_reshaped[ i , j ]
-		area_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				area_mat[ i , j ] = area_vals_reshaped[ i , j ]
 		plt.figure( 2 , figsize = ( 8.0 , 5.0 ) )
-		c4 = plt.pcolormesh( volume_mat , phi_0_mat , dist_mat )
+		c4 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , dist_vals_reshaped )
 		plt.colorbar( c4 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2232,7 +2200,7 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 		plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 		plt.savefig( 'Results/' + run_name + '/Calibration_Distance.png' )
 		plt.figure( 3 , figsize = ( 8.0 , 5.0 ) )
-		c6 = plt.pcolormesh( volume_mat , phi_0_mat , dist_dir_mat )
+		c6 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , dist_dir_vals_reshaped )
 		plt.colorbar( c6 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2241,7 +2209,7 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 		plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 		plt.savefig( 'Results/' + run_name + '/Calibration_Distance_Directional.png' )
 		plt.figure( 4 , figsize = ( 8.0 , 5.0 ) )
-		c7 = plt.pcolormesh( volume_mat , phi_0_mat , area_mat )
+		c7 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , area_vals_reshaped )
 		plt.colorbar( c7 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2258,12 +2226,8 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 			HD_vals_reshaped = HD_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 			Jaccard_dir_vals = calibration_data[ : , 6 ]
 			Jaccard_dir_vals_reshaped = Jaccard_dir_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
-			Jaccard_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					Jaccard_mat[ i , j ] = Jaccard_vals_reshaped[ i , j ]
 			plt.figure( 5 , figsize = ( 8.0 , 5.0 ) )
-			c1 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_mat , cmap = 'viridis' )
+			c1 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , Jaccard_vals_reshaped , cmap = 'viridis' )
 			plt.colorbar( c1 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2271,12 +2235,8 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 			plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 			plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 			plt.savefig( 'Results/' + run_name + '/Calibration_Jaccard.png' )
-			MSD_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					MSD_mat[ i , j ] = MSD_vals_reshaped[ i , j ]
 			plt.figure( 6 , figsize = ( 8.0 , 5.0 ) )
-			c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat , cmap = 'viridis_r' )
+			c2 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , MSD_vals_reshaped , cmap = 'viridis_r' )
 			plt.colorbar( c2 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2284,12 +2244,8 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 			plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 			plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 			plt.savefig( 'Results/' + run_name + '/Calibration_RMSD.png' )
-			HD_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					HD_mat[ i , j ] = HD_vals_reshaped[ i , j ]
 			plt.figure( 7 , figsize = ( 8.0 , 5.0 ) )
-			c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat , cmap = 'viridis_r' )
+			c3 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , HD_vals_reshaped , cmap = 'viridis_r' )
 			plt.colorbar( c3 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2297,12 +2253,8 @@ def plot_deg( run_name , type_sim , Cities , polygon , lon1 , lon2 , lat1 , lat2
 			plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 			plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 			plt.savefig( 'Results/' + run_name + '/Calibration_HD.png' )
-			Jaccard_dir_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					Jaccard_dir_mat[ i , j ] = Jaccard_dir_vals_reshaped[ i , j ]
 			plt.figure( 8 , figsize = ( 8.0 , 5.0 ) )
-			c5 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_dir_mat , cmap = 'viridis' )
+			c5 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , Jaccard_dir_vals_reshaped , cmap = 'viridis' )
 			plt.colorbar( c5 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2384,40 +2336,8 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 		dist_dir_vals_reshaped = dist_dir_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 		area_vals = calibration_data[ : , 8 ]
 		area_vals_reshaped = area_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
-		lenx = len( volume_vals_reshaped[ : , 1 ] )
-		leny = len( volume_vals_reshaped[ 1 , : ] )
-		volume_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			volume_mat[ i , 0 ] = volume_vals_reshaped[ i , 0 ]
-			volume_mat[ i , leny ] = volume_vals_reshaped[ i , leny - 1 ]
-		for i in range( 0 , lenx ):
-			for j in range( 1 , leny ):
-				volume_mat[ i , j ] = volume_vals_reshaped[ i , j ] * 0.5 + volume_vals_reshaped[ i , j - 1 ] * 0.5 
-		volume_mat[ lenx , : ] = volume_mat[ lenx - 1 , : ]
-		phi_0_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for j in range( leny ):
-			phi_0_mat[ 0 , j ] = phi_0_vals_reshaped[ 0 , j ]
-			phi_0_mat[ lenx , j ] = phi_0_vals_reshaped[ lenx - 1 , j ]
-		for i in range( 1 , lenx ):
-			for j in range( 0 , leny ):
-				phi_0_mat[ i , j ] = phi_0_vals_reshaped[ i , j ] * 0.5 + phi_0_vals_reshaped[ i - 1 , j - 1 ] * 0.5 
-		for j in range( lenx + 1 ):
-			phi_0_mat[ j , leny ] = - phi_0_mat[ j , leny - 2 ] + 2 * phi_0_mat[ j , leny - 1 ]
-		phi_0_mat[ : , leny ] = phi_0_mat[ : , leny - 1 ]
-		dist_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				dist_mat[ i , j ] = dist_vals_reshaped[ i , j ]
-		dist_dir_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				dist_dir_mat[ i , j ] = dist_dir_vals_reshaped[ i , j ]
-		area_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				area_mat[ i , j ] = area_vals_reshaped[ i , j ]
 		plt.figure( 2 , figsize = ( 8.0 , 5.0 ) )
-		c4 = plt.pcolormesh( volume_mat , phi_0_mat , dist_mat )
+		c4 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , dist_vals_reshaped )
 		plt.colorbar( c4 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2426,7 +2346,7 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 		plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 		plt.savefig( 'Results/' + run_name + '/Calibration_Distance.png' )
 		plt.figure( 3 , figsize = ( 8.0 , 5.0 ) )
-		c6 = plt.pcolormesh( volume_mat , phi_0_mat , dist_dir_mat )
+		c6 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , dist_dir_vals_reshaped )
 		plt.colorbar( c6 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2435,7 +2355,7 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 		plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 		plt.savefig( 'Results/' + run_name + '/Calibration_Distance_Directional.png' )
 		plt.figure( 4 , figsize = ( 8.0 , 5.0 ) )
-		c7 = plt.pcolormesh( volume_mat , phi_0_mat , area_mat )
+		c7 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , area_vals_reshaped )
 		plt.colorbar( c7 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
@@ -2452,12 +2372,8 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 			HD_vals_reshaped = HD_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 			Jaccard_dir_vals = calibration_data[ : , 6 ]
 			Jaccard_dir_vals_reshaped = Jaccard_dir_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
-			Jaccard_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					Jaccard_mat[ i , j ] = Jaccard_vals_reshaped[ i , j ]
 			plt.figure( 5 , figsize = ( 8.0 , 5.0 ) )
-			c1 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_mat , cmap = 'viridis' )
+			c1 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , Jaccard_vals_reshaped , cmap = 'viridis' )
 			plt.colorbar( c1 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2465,12 +2381,8 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 			plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 			plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 			plt.savefig( 'Results/' + run_name + '/Calibration_Jaccard.png' )
-			MSD_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					MSD_mat[ i , j ] = MSD_vals_reshaped[ i , j ]
 			plt.figure( 6 , figsize = ( 8.0 , 5.0 ) )
-			c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat , cmap = 'viridis_r' )
+			c2 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , MSD_vals_reshaped , cmap = 'viridis_r' )
 			plt.colorbar( c2 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2478,12 +2390,8 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 			plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 			plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 			plt.savefig( 'Results/' + run_name + '/Calibration_RMSD.png' )
-			HD_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					HD_mat[ i , j ] = HD_vals_reshaped[ i , j ]
 			plt.figure( 7 , figsize = ( 8.0 , 5.0 ) )
-			c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat , cmap = 'viridis_r' )
+			c3 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , HD_vals_reshaped , cmap = 'viridis_r' )
 			plt.colorbar( c3 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2491,12 +2399,8 @@ def plot_utm( run_name , type_sim , polygon , matrix_east , matrix_north , east_
 			plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 			plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 			plt.savefig( 'Results/' + run_name + '/Calibration_HD.png' )
-			Jaccard_dir_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-			for i in range( lenx ):
-				for j in range( leny ):
-					Jaccard_dir_mat[ i , j ] = Jaccard_dir_vals_reshaped[ i , j ]
 			plt.figure( 8 , figsize = ( 8.0 , 5.0 ) )
-			c5 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_dir_mat , cmap = 'viridis' )
+			c5 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , Jaccard_dir_vals_reshaped , cmap = 'viridis' )
 			plt.colorbar( c5 )
 			plt.xlabel( 'log( Collapsing volume [m3] )' )
 			plt.ylabel( 'Initial concentration' )
@@ -2815,42 +2719,14 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 
 	volume_vals = np.log10( calibration_data[ : , 0 ] ) 
 	volume_vals_reshaped = volume_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
-	phi0_vals = calibration_data[ : , 1 ] 
-	phi0_vals_reshaped = phi0_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
+	phi_0_vals = calibration_data[ : , 1 ]
+	phi_0_vals_reshaped = phi_0_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 	dist_vals = calibration_data[ : , 5 ]
 	dist_vals_reshaped = dist_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 	area_vals = calibration_data[ : , 8 ]
 	area_vals_reshaped = area_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
-	lenx = len( volume_vals_reshaped[ : , 1 ] )
-	leny = len( volume_vals_reshaped[ 1 , : ] )
-	volume_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-	for i in range( lenx ):
-		volume_mat[ i , 0 ] = volume_vals_reshaped[ i , 0 ]
-		volume_mat[ i , leny ] = volume_vals_reshaped[ i , leny - 1 ]
-	for i in range( 0 , lenx ):
-		for j in range( 1 , leny ):
-			volume_mat[ i , j ] = volume_vals_reshaped[ i , j ] * 0.5 + volume_vals_reshaped[ i , j - 1 ] * 0.5 
-	volume_mat[ lenx , : ] = volume_mat[ lenx - 1 , : ]
-	phi_0_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-	for j in range( leny ):
-		phi_0_mat[ 0 , j ] = phi0_vals_reshaped[ 0 , j ]
-		phi_0_mat[ lenx , j ] = phi0_vals_reshaped[ lenx - 1 , j ]
-	for i in range( 1 , lenx ):
-		for j in range( 0 , leny ):
-			phi_0_mat[ i , j ] = phi0_vals_reshaped[ i , j ] * 0.5 + phi0_vals_reshaped[ i - 1 , j - 1 ] * 0.5
-	for j in range( lenx + 1 ):
-		phi_0_mat[ j , leny ] = - phi_0_mat[ j , leny - 2 ] + 2 * phi_0_mat[ j , leny - 1 ]
-	phi_0_mat[ : , leny ] = phi_0_mat[ : , leny - 1 ]
-	dist_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-	for i in range( lenx ):
-		for j in range( leny ):
-			dist_mat[ i , j ] = dist_vals_reshaped[ i , j ]
-	area_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-	for i in range( lenx ):
-		for j in range( leny ):
-			area_mat[ i , j ] = area_vals_reshaped[ i , j ]
 	plt.figure( 4 , figsize = ( 8.0 , 5.0 ) )
-	c4 = plt.pcolormesh( volume_mat , phi_0_mat , dist_mat , cmap = 'viridis' )
+	c4 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , dist_vals_reshaped , cmap = 'viridis' )
 	plt.colorbar( c4 )
 	plt.xlabel( 'log( Collapsing volume [m3] )' )
 	plt.ylabel( 'Initial concentration' )
@@ -2858,7 +2734,7 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 	plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 	plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
 	plt.figure( 5 , figsize = ( 8.0 , 5.0 ) )
-	c7 = plt.pcolormesh( volume_mat , phi_0_mat , area_mat , cmap = 'viridis' )
+	c7 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , area_vals_reshaped , cmap = 'viridis' )
 	plt.colorbar( c7 )
 	plt.xlabel( 'log( Collapsing volume [m3] )' )
 	plt.ylabel( 'Initial concentration' )
@@ -2872,36 +2748,24 @@ def plot_only_calibration( calibration_data , vertices_compare , N , comparison_
 		MSD_vals_reshaped = MSD_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
 		HD_vals = calibration_data[ : , 4 ]
 		HD_vals_reshaped = HD_vals.reshape( int( np.sqrt( N ) ) , int( np.sqrt( N ) ) )
-		Jaccard_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				Jaccard_mat[ i , j ] = Jaccard_vals_reshaped[ i , j ]
 		plt.figure( 6 , figsize = ( 8.0 , 5.0 ) )
-		c1 = plt.pcolormesh( volume_mat , phi_0_mat , Jaccard_mat , cmap = 'viridis' )
+		c1 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , Jaccard_vals_reshaped , cmap = 'viridis' )
 		plt.colorbar( c1 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
 		plt.title( 'Jaccard Index' )
 		plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 		plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
-		MSD_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				MSD_mat[ i , j ] = MSD_vals_reshaped[ i , j ]
 		plt.figure( 7 , figsize = ( 8.0 , 5.0 ) )
-		c2 = plt.pcolormesh( volume_mat , phi_0_mat , MSD_mat , cmap = 'viridis_r' )
+		c2 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , MSD_vals_reshaped , cmap = 'viridis_r' )
 		plt.colorbar( c2 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
 		plt.title( 'RMSD [m]' )
 		plt.xlim( np.min( np.log10( calibration_data[ : , 0 ] ) ) , np.max( np.log10( calibration_data[ : , 0 ] ) ) )
 		plt.ylim( np.min( calibration_data[ : , 1 ] ) , np.max( calibration_data[ : , 1 ] ) )
-		HD_mat = np.zeros( ( lenx + 1 , leny + 1 ) )
-		for i in range( lenx ):
-			for j in range( leny ):
-				HD_mat[ i , j ] = HD_vals_reshaped[ i , j ]
 		plt.figure( 8 , figsize = ( 8.0 , 5.0 ) )
-		c3 = plt.pcolormesh( volume_mat , phi_0_mat , HD_mat , cmap = 'viridis_r' )
+		c3 = plt.pcolormesh( volume_vals_reshaped , phi_0_vals_reshaped , HD_vals_reshaped , cmap = 'viridis_r' )
 		plt.colorbar( c3 )
 		plt.xlabel( 'log( Collapsing volume [m3] )' )
 		plt.ylabel( 'Initial concentration' )
