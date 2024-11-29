@@ -2000,6 +2000,7 @@ class MainFrame:
 			self.but_saveres.configure( state = 'disabled' )
 
 if __name__ == '__main__':
+	np.set_printoptions( legacy =' 1.25 ')
 	root = Tk()
 	my_gui = MainFrame( root )
 	root.after( 100 )
