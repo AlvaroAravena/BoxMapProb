@@ -1630,7 +1630,7 @@ def compute_box_model_deg( type_sim , lon1 , lon2 , lat1 , lat2 , step_lon_deg ,
 								polygon.append( ( new_x , new_y , height_eff , polygon[ j ][ 3 ] + 1 , l , new_volume , wh_sum[ lint ] ) )
 
 			sum_pixels = sum( sum( data_step ) )	
-			print( ( j , len( polygon ) , polygon[ j ][ 3 ] , polygon[ j ][ 2 ] , sum( sum( data_step ) ) , polygon[ j ][ 4 ] , polygon[ j ][ 5 ] , polygon[ j ][ 6 ] , Lmax ) )
+			print( ( j , len( polygon ) , float( polygon[ j ][ 3 ] ) , float( polygon[ j ][ 2 ] ) , float( sum( sum( data_step ) ) ) , float( polygon[ j ][ 4 ] ) , float( polygon[ j ][ 5 ] ) , float( polygon[ j ][ 6 ] ) , Lmax ) )
 			if( save_data == 1 or type_sim == 2 ):
 				if( ( j == 0 or ( j + 1 == len( polygon ) ) ) or ( polygon[ j ][ 3 ] < polygon[ j + 1 ][ 3 ] ) ):
 					img = data_step[ range( len( data_cones[ : , 0 ] ) -1 , -1 , -1 ) , : ].astype( np.uint8 )
@@ -2083,7 +2083,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 							if( not np.isnan( interpol_pos( east_cor , north_cor , cellsize , cellsize , new_x , new_y , n_east , n_north , Topography ) ) and wh_sum[ lint ] * new_volume > 1000 ):
 								polygon.append( ( new_x , new_y , height_eff , polygon[ j ][ 3 ] + 1 , l , new_volume, wh_sum[lint] ) )
 			sum_pixels = sum( sum( data_step ) )
-			print( ( j , len( polygon ) , polygon[ j ][ 3 ] , polygon[ j ][ 2 ] , sum( sum( data_step ) ) , polygon[ j ][ 4 ] , polygon[ j ][ 5 ] , polygon[ j ][ 6 ] , Lmax ) )
+			print( ( j , len( polygon ) , float( polygon[ j ][ 3 ] ) , float( polygon[ j ][ 2 ] ) , float( sum( sum( data_step ) ) ) , float( polygon[ j ][ 4 ] ) , float( polygon[ j ][ 5 ] ) , float( polygon[ j ][ 6 ] ) , Lmax ) )
 			if( save_data == 1 or type_sim == 2 ):
 				if( ( j == 0 or ( j + 1 == len( polygon ) ) ) or ( polygon[ j ][ 3 ] < polygon[ j + 1 ][ 3 ] ) ):
 					img = data_step[ range( len( data_cones[ : , 0 ] ) -1 , -1 , -1 ) , : ].astype( np.uint8 )
