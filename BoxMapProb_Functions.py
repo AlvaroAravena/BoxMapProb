@@ -1078,7 +1078,7 @@ def read_comparison_polygon_deg( comparison_polygon , comparison_type , input_fi
 			string_compare = np.loadtxt( input_file_cal , skiprows = 1 )
 		line_compare = plt.contour( matrix_lon , matrix_lat , matrix_compare[ range( len( matrix_compare[ : , 0 ] ) -1 , -1 , -1 ) , : ] , np.array( [ 0 ] ) , colors = 'r' , interpolation = 'linear' )
 		plt.close()
-		path_compare = line_compare.collections[ 0 ].get_paths()[ 0 ]
+		path_compare = line_compare.get_paths()[ 0 ]
 		ver_compare = path_compare.vertices
 		dist_compare = np.zeros( len( ver_compare ) - 1 )
 		for i in range( len( ver_compare ) - 1 ):
@@ -1173,7 +1173,7 @@ def read_comparison_polygon_utm( comparison_polygon , comparison_type , input_fi
 			string_compare = np.loadtxt( input_file_cal , skiprows = 1 )
 		line_compare = plt.contour( matrix_east , matrix_north , matrix_compare[ range( len( matrix_compare[ : , 0 ] ) -1 , -1 , -1 ) , : ] , np.array( [ 0 ] ) , colors = 'r' , interpolation = 'linear' )
 		plt.close()
-		path_compare = line_compare.collections[ 0 ].get_paths()[ 0 ]
+		path_compare = line_compare.get_paths()[ 0 ]
 		ver_compare = path_compare.vertices
 		dist_compare = np.zeros( len( ver_compare ) - 1 )
 		for i in range( len( ver_compare ) - 1 ):
@@ -2111,7 +2111,7 @@ def compute_box_model_utm( type_sim , n_north , n_east , east_cor , north_cor , 
 					data_step_border[ : , 0 ] = 0.0
 					data_step_border[ : , len( data_step_border[ 0 , : ] ) -1 ] = 0.0
 					line_new = plt.contour( matrix_east , matrix_north , data_step_border , np.array( [ 0 ] ) , colors = 'r' , interpolation = 'linear' )
-					path_new = line_new.collections[ 0 ].get_paths()
+					path_new = line_new.get_paths()
 					if( len( path_new ) == 1 ):
 						path_new = path_new[ 0 ]
 					else:
